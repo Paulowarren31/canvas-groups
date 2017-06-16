@@ -1,0 +1,11 @@
+<div class="container">
+  <h2> Students who Share Your Classes </h2>
+  <ul class="list-group">
+    {{#each people}}
+    <li class="list-group-item" style="display: inline;">{{this.name}}
+      <small class="pl-2 text-primary">you share {{this.classes.length}} classes</small>
+      <div class="btn btn-sm float-right" style="float: right;" id="create-{{this.id}}">Create Group</div>
+    </li>
+    {{/each}}
+  </ul>
+</div>
