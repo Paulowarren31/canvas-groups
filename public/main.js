@@ -11,6 +11,18 @@ $(function(){
       dataType: 'json'
     })
   })
+
+  $('#student-btn').on('click', function(e){
+    $('#student-list').removeClass('hidden')
+    $('#classes-list').addClass('hidden')
+  })
+
+  $('#class-btn').on('click', function(e){
+    $('#classes-list').removeClass('hidden')
+    $('#student-list').addClass('hidden')
+  })
+
+
 })
 
 function succ(a){

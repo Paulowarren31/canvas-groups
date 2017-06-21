@@ -1,12 +1,12 @@
 <div class="container">
   <h2> Students who Share Your Classes </h2>
   <div class="row">
-    <div class="col-xs-12 col-md-6"><button id="student-btn"class="btn btn-primary">Students</button></div>
-    <div class="col-xs-12 col-md-6"><button id="class-btn"class="btn btn-primary">Group List</button></div>
+    <div class="col-xs-12 col-md-6"><button id="student-btn"class="btn btn-primary btn-long">Students</button></div>
+    <div class="col-xs-12 col-md-6"><button id="class-btn"class="btn btn-primary btn-long">Group List</button></div>
   </div>
-  <ul id="people-list" class="list-group">
+  <ul id="student-list" class="list-group">
     {{#each people}}
-    <li class="list-group-item row" style="display: inline;">
+    <li class="list-group-item row">
       <div class="col-lg-4">{{this.name}}</div>
       <div class="col-lg-4 text-primary">you share {{this.classes.length}} classes</div>
       <div class="col-lg-4"i>{{this.login_id}}</div>
