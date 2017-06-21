@@ -6,23 +6,19 @@
   </div>
   <ul id="people-list" class="list-group">
     {{#each people}}
-    <li class="list-group-item" style="display: inline;">
-      <div class="row">
-        <div class="col-xs-4">{{this.name}}</div>
-        <div class="col-xs-4 text-primary">you share {{this.classes.length}} classes</div>
-        <div class="col-xs-4"i>{{this.login_id}}</div>
-      </div>
+    <li class="list-group-item row" style="display: inline;">
+      <div class="col-lg-4">{{this.name}}</div>
+      <div class="col-lg-4 text-primary">you share {{this.classes.length}} classes</div>
+      <div class="col-lg-4"i>{{this.login_id}}</div>
     </li>
     {{/each}}
   </ul>
   <ul id="classes-list" class="list-group">
     {{#each classes}}
-    <li class="list-group-item" style="display: inline;">{{this.name}}
-      <div class="row">
-        <div class="col-xs-4">{{this.students.length}} Shared Classes</div>
-        <div class="col-xs-4">{{this.classes}}</div>
-        <div class="col-xs-4">{{this.students.length}} People</div>
-      </div>
+    <li class="list-group-item row" style="display: inline;">{{this.name}}
+      <div class="col-lg-4">{{this.students.length}} Shared Classes</div>
+      <div class="col-lg-4">{{this.classes}}</div>
+      <div class="col-lg-4">{{this.students.length}} People</div>
     </li>
     {{/each}}
   </ul>
