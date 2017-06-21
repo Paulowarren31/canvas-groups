@@ -40,12 +40,13 @@ app.post('/', function(req, res){
 
           //done with async stuff
           if(big_classes.length == classes.length){
-            handleClasses(big_classes, function(grouped_users){
+            handleClasses(big_classes, function(grouped_users, classes){
 
               res.render('home', {
                 title: 'Hey',
                 message: 'Hello there!',
-                people: grouped_users})
+                people: grouped_users,
+                classes: classes})
 
             })
           }
@@ -83,10 +84,37 @@ function handleClasses(classes, callback){
     })
   })
   users = []
+  classes_to_users = new Map();
+
+
   dictionary.forEach(function(item){
-    if(item.classes.length > 1) users.push(item)
+    //filter out users who only share 1 class
+    if(item.classes.length > 1){
+      users.push(item)
+
+      sorted = item.classes.sort().toString()
+
+
+      if(classes_to_users.has(sorted)){
+        classes_to_users.get(sorted).push(item)
+      }
+      else{
+        classes_to_users.set(sorted, [item])
+      }
+    }
   })
-  callback(users)
+
+  classes = []
+
+  classes_to_users.forEach(function(val, key){
+    c_c = key.split(',').length
+    classes.push({'classes': key, 'students': val, 'c_count': c_c})
+  })
+
+
+
+  console.log(users)
+  callback(users, classes)
 
 }
 
