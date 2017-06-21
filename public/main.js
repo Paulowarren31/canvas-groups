@@ -1,4 +1,5 @@
 $(function(){
+  $('[data-toggle="tooltip"]').tooltip()
   $('[id^=create]').on('click', e => {
     alert('clicked')
 
