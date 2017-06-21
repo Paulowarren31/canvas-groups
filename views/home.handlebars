@@ -8,7 +8,7 @@
     {{#each people}}
     <li class="list-group-item row">
       <div class="col-lg-4">{{this.name}}</div>
-      <div class="col-lg-4 text-primary">you share {{this.classes.length}} classes</div>
+      <div class="col-lg-4 text-primary" data-toggle="tooltip" data-placement="top" title="{{this.classes}}">you share {{this.classes.length}} classes</div>
       <div class="col-lg-4"i>{{this.login_id}}</div>
     </li>
     {{/each}}
