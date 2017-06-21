@@ -15,8 +15,8 @@
   </ul>
   <ul id="classes-list" class="list-group">
     {{#each classes}}
-    <li class="list-group-item row" style="display: inline;">{{this.name}}
-      <div class="col-lg-4">{{this.students.length}} Shared Classes</div>
+    <li class="list-group-item row">{{this.name}}
+      <div class="col-lg-4"><strong>{{this.c_count}} Shared Classes</strong></div>
       <div class="col-lg-4">{{this.classes}}</div>
       <div class="col-lg-4">{{this.students.length}} People</div>
     </li>
