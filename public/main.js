@@ -11,7 +11,7 @@ $(function(){
       group_name: group_name
     }
 
-    let url = 'http://smart-groups-canvas-groups.openshift.dsc.umich.edu/create'
+    let url = 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/create'
 
     $.ajax({
       type: 'POST',
