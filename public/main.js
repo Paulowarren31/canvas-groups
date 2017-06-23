@@ -2,18 +2,24 @@ $(function(){
   $('[data-toggle="tooltip"]').tooltip()
 
   $('[id^=create]').on('click', e => {
-    console.log(e)
+
+    ids = e.target.id.split('-')[2]
+    group_name = e.target.id.split('-')[1]
+
+    data = {
+      user_ids: ids,
+      group_name: group_name
+    }
 
     let url = 'http://smart-groups-canvas-groups.openshift.dsc.umich.edu/create'
-    /*
+
     $.ajax({
       type: 'POST',
       url: url,
       success: succ,
-      data: {a:'a'},
+      data: data,
       dataType: 'json'
     })
-    */
   })
 
   $('#student-btn').on('click', function(e){

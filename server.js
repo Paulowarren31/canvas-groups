@@ -147,7 +147,11 @@ app.post('/create', function(req,res){
   let url = 'https://umich-dev.instructure.com/api/v1/groups?access_token='
     +token
 
+  console.log('server got create request for group name '+ req.body.group_name
+                +' and ids: '+ req.body.user_ids)
+
   //post request to create group
+  /*
   axios.post(url, {
     name: req.body.group_name,
     description: 'this is a group',
@@ -198,6 +202,7 @@ app.post('/create', function(req,res){
 
 
   })
+  */
 })
 
 //step 1 oauth
