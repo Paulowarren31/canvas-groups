@@ -1,3 +1,6 @@
+function complete(){
+  alert('complete')
+}
 $(function(){
   $('[data-toggle="tooltip"]').tooltip()
 
@@ -20,6 +23,11 @@ $(function(){
         console.log('success')
         console.log(r)
       },
+      error: function(a, status, error){
+        console.log(status)
+        console.log(error)
+      }, 
+      complete: complete
       data: data,
       dataType: 'application/json'
     })
@@ -34,6 +42,7 @@ $(function(){
     $('#classes-list').removeClass('hidden')
     $('#student-list').addClass('hidden')
   })
+
 
 
 })
