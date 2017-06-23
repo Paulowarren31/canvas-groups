@@ -27,7 +27,7 @@ $(function(){
         console.log(status)
         console.log(error)
       }, 
-      complete: complete
+      complete: complete,
       data: data,
       dataType: 'application/json'
     })
