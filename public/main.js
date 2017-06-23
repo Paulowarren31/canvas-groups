@@ -37,4 +37,6 @@ $(function(){
 
 function succ(a){
   console.log(a)
+  alert('you did it you created the group nice job man')
+  
 }

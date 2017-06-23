@@ -184,14 +184,20 @@ app.post('/create', function(req,res){
           }).then(r => {
             res.send('success!' + user_emails + ' have been invited ')
 
+            done_ids = []
+
             user_ids.forEach(function(id){
               let join_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
 
               axios.put(join_url, {}, {
                 headers: { Authorization: "Bearer " + token }
               }).then(r => {
+                done_ids.push(id)
                 console.log(r)
                 console.log('accepted invite for user id: '+ id)
+                if(done_ids.length = user_ids){
+                  res.send('ayy you done')
+                }
               })
             })
           })
