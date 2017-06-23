@@ -11,7 +11,7 @@ $(function(){
       group_name: group_name
     }
 
-    let url = 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/ping'
+    let url = 'http://0.0.0.0:8080/ping'
 
     $.ajax({
       type: 'POST',

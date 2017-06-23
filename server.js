@@ -204,6 +204,8 @@ app.post('/create', function(req,res){
 })
 
 app.post('/ping', function(req, res){
+  console.log(req.body)
+  console.log('got a ping')
   res.send('pong')
 })
 
