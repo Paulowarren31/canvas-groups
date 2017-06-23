@@ -19,8 +19,12 @@ $(function(){
       type: 'POST',
       url: url,
       success: function(r){
-        console.log('success')
-        console.log(r)
+
+        url = r.url
+        $('#link-'+group_name).removeClass('hidden')
+        $('#link-'+group_name).attr("href", url)
+
+        $(e.target).addClass('hidden')
       },
       error: function(a, status, error){
         console.log(status)

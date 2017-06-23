@@ -163,6 +163,8 @@ app.post('/create', function(req,res){
     let invite_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id
       +'/invite?access_token='+token
 
+    let group_url = 'https://umich-dev.instructure.com/groups/' + grp_id
+
 
     let user_ids = req.body.user_ids.split(',')
     let user_emails = []
@@ -181,7 +183,7 @@ app.post('/create', function(req,res){
           }, {
             headers: { Authorization: "Bearer " + token }
           }).then(r => {
-            res.send('success!' + user_emails + ' have been invited ')
+            res.send({url: group_url})
 
             user_ids.forEach(function(id){
               let join_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
@@ -197,8 +199,6 @@ app.post('/create', function(req,res){
         }
       })
     })
-
-
   })
 })
 
