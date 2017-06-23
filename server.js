@@ -41,7 +41,6 @@ app.post('/', function(req, res){
           //done with async stuff
           if(big_classes.length == classes.length){
             handleClasses(big_classes, function(grouped_users, classes){
-              console.log(classes)
 
               res.render('home', {
                 title: 'Hey',
@@ -206,7 +205,7 @@ app.post('/create', function(req,res){
 app.post('/ping', function(req, res){
   console.log(req.body)
   console.log('got a ping')
-  res.send('pong')
+  res.send({p: 'pong'})
 })
 
 //step 1 oauth

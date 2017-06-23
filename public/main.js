@@ -1,5 +1,4 @@
 function complete(){
-  alert('complete')
 }
 $(function(){
   $('[data-toggle="tooltip"]').tooltip()
@@ -29,7 +28,7 @@ $(function(){
       }, 
       complete: complete,
       data: data,
-      dataType: 'application/json'
+      dataType: 'json'
     })
   })
 
