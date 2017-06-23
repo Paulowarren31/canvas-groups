@@ -11,12 +11,15 @@ $(function(){
       group_name: group_name
     }
 
-    let url = 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/create'
+    let url = 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/ping'
 
     $.ajax({
       type: 'POST',
       url: url,
-      success: succ,
+      success: function(r){
+        console.log('success')
+        console.log(r)
+      },
       data: data,
       dataType: 'json'
     })
@@ -34,9 +37,3 @@ $(function(){
 
 
 })
-
-function succ(a){
-  console.log(a)
-  alert('you did it you created the group nice job man')
-  
-}
