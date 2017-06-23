@@ -1,9 +1,11 @@
 $(function(){
   $('[data-toggle="tooltip"]').tooltip()
-  $('[id^=create]').on('click', e => {
-    alert('clicked')
 
-    let url = 'http://smart-groups-canvas-groups.openshift.dsc.umich.edu/test'
+  $('[id^=create]').on('click', e => {
+    console.log(e)
+
+    let url = 'http://smart-groups-canvas-groups.openshift.dsc.umich.edu/create'
+    /*
     $.ajax({
       type: 'POST',
       url: url,
@@ -11,6 +13,7 @@ $(function(){
       data: {a:'a'},
       dataType: 'json'
     })
+    */
   })
 
   $('#student-btn').on('click', function(e){

@@ -41,6 +41,7 @@ app.post('/', function(req, res){
           //done with async stuff
           if(big_classes.length == classes.length){
             handleClasses(big_classes, function(grouped_users, classes){
+              console.log(classes)
 
               res.render('home', {
                 title: 'Hey',
@@ -67,6 +68,7 @@ function handleClasses(classes, callback){
   getUserId().then(self_id => {
     classes.forEach(function(cl){
       cl.users.forEach(function(user){
+
         //dont include ourselves
         if(self_id == user.id) return
 
@@ -94,7 +96,6 @@ function handleClasses(classes, callback){
 
         sorted = item.classes.sort().toString()
 
-
         if(classes_to_users.has(sorted)){
           classes_to_users.get(sorted).push(item)
         }
@@ -108,11 +109,17 @@ function handleClasses(classes, callback){
 
     classes_to_users.forEach(function(val, key){
       c_c = key.split(',').length
-      classes.push({'classes': key, 'students': val, 'c_count': c_c})
+      students = val
+      s_ids = []
+
+      students.forEach(function(student){
+        s_ids.push(student.id)
+      })
+
+      classes.push({'classes': key, 'students': val, 'c_count': c_c, 's_ids': s_ids})
     })
 
 
-    console.log(users)
     callback(users, classes)
 
   })
@@ -133,6 +140,9 @@ async function getUserEmail(id){
 }
 
 //creates a new group with given ids and name of group
+//expects body to have:
+//group_name: name of group
+//user_ids: list of ids separated by  , to be invited to the group
 app.post('/create', function(req,res){
   let url = 'https://umich-dev.instructure.com/api/v1/groups?access_token='
     +token
@@ -146,7 +156,6 @@ app.post('/create', function(req,res){
   }, {
     headers: { Authorization: "Bearer " + token }
   }).then(r => {
-    console.log(r)
 
     let grp_id = r.data.id
     let invite_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id
@@ -156,20 +165,20 @@ app.post('/create', function(req,res){
     let user_ids = req.body.user_ids.split(',')
     let user_emails = []
 
-
-
+    // for each user id, get their email
     user_ids.forEach(function(id){
       getUserEmail(id).then(e => {
         user_emails.push(e)
+
+        //all user emails ready
         if(user_emails.length == user_ids.length){
-          //all user emails ready
+
           //send invite
           axios.post(invite_url, {
             invitees: user_emails
           }, {
             headers: { Authorization: "Bearer " + token }
           }).then(r => {
-            console.log(r)
             res.send('success!' + user_emails + ' have been invited ')
 
             user_ids.forEach(function(id){
