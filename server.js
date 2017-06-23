@@ -68,9 +68,11 @@ function handleClasses(classes, callback){
 
   classes.forEach(function(cl){
     cl.users.forEach(function(user){
-
       //dont include ourselves
-      if(self_id == user.id) return
+      if(self_id == user.id){
+        console.log('found self')
+        return
+      } 
 
       if(dictionary.has(user.id)){
         dictionary.get(user.id).classes.push(cl.name)
@@ -110,7 +112,6 @@ function handleClasses(classes, callback){
     c_c = key.split(',').length
     classes.push({'classes': key, 'students': val, 'c_count': c_c})
   })
-
 
 
   console.log(users)
@@ -153,8 +154,10 @@ app.post('/create', function(req,res){
     let invite_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id
       +'/invite?access_token='+token
 
+
     let user_ids = req.body.user_ids.split(',')
     let user_emails = []
+
 
 
     user_ids.forEach(function(id){
@@ -170,6 +173,17 @@ app.post('/create', function(req,res){
           }).then(r => {
             console.log(r)
             res.send('success!' + user_emails + ' have been invited ')
+
+            user_ids.forEach(function(id){
+              let join_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
+
+              axios.put(join_url, {}, {
+                headers: { Authorization: "Bearer " + token }
+              }).then(r => {
+                console.log(r)
+                console.log('accepted invite for user id: '+ id)
+              })
+            })
           })
         }
       })
