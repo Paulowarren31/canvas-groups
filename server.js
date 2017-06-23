@@ -64,64 +64,62 @@ function handleClasses(classes, callback){
   dictionary = new Map();
 
 
-  self_id = getUserId()
+  getUserId().then(self_id => {
+    classes.forEach(function(cl){
+      cl.users.forEach(function(user){
+        //dont include ourselves
+        if(self_id == user.id) return
 
-  classes.forEach(function(cl){
-    cl.users.forEach(function(user){
-      //dont include ourselves
-      if(self_id == user.id){
-        console.log('found self')
-        return
-      } 
+        if(dictionary.has(user.id)){
+          dictionary.get(user.id).classes.push(cl.name)
+          //console.log('dupe')
+        }
+        else{
+          //console.log(cl)
+          user.classes = [cl.name]
+          dictionary.set(user.id, user)
+        }
+      })
+    })
 
-      if(dictionary.has(user.id)){
-        dictionary.get(user.id).classes.push(cl.name)
-        //console.log('dupe')
-      }
-      else{
-        //console.log(cl)
-        user.classes = [cl.name]
-        dictionary.set(user.id, user)
+
+    users = []
+    classes_to_users = new Map();
+
+
+    dictionary.forEach(function(item){
+      //filter out users who only share 1 class
+      if(item.classes.length > 1){
+        users.push(item)
+
+        sorted = item.classes.sort().toString()
+
+
+        if(classes_to_users.has(sorted)){
+          classes_to_users.get(sorted).push(item)
+        }
+        else{
+          classes_to_users.set(sorted, [item])
+        }
       }
     })
+
+    classes = []
+
+    classes_to_users.forEach(function(val, key){
+      c_c = key.split(',').length
+      classes.push({'classes': key, 'students': val, 'c_count': c_c})
+    })
+
+
+    console.log(users)
+    callback(users, classes)
+
   })
-  users = []
-  classes_to_users = new Map();
-
-
-  dictionary.forEach(function(item){
-    //filter out users who only share 1 class
-    if(item.classes.length > 1){
-      users.push(item)
-
-      sorted = item.classes.sort().toString()
-
-
-      if(classes_to_users.has(sorted)){
-        classes_to_users.get(sorted).push(item)
-      }
-      else{
-        classes_to_users.set(sorted, [item])
-      }
-    }
-  })
-
-  classes = []
-
-  classes_to_users.forEach(function(val, key){
-    c_c = key.split(',').length
-    classes.push({'classes': key, 'students': val, 'c_count': c_c})
-  })
-
-
-  console.log(users)
-  callback(users, classes)
-
 }
 
 async function getUserId(){
   let url = 'https://umich-dev.instructure.com/api/v1/users/self?access_token='+token
-
   user = await axios.get(url)
   return user.data.id
 }
