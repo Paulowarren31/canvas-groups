@@ -151,7 +151,6 @@ app.post('/create', function(req,res){
                 +' and ids: '+ req.body.user_ids)
 
   //post request to create group
-  /*
   axios.post(url, {
     name: req.body.group_name,
     description: 'this is a group',
@@ -202,7 +201,6 @@ app.post('/create', function(req,res){
 
 
   })
-  */
 })
 
 //step 1 oauth
