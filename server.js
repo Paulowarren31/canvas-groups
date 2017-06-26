@@ -215,7 +215,7 @@ app.get('/test', function(req, res){
 })
 
 //step 2 oauth
-app.get('/test2', function(req,res){
+app.get('/oauth', function(req,res){
   console.log(req.query)
   if(req.query.error == 'access_denied'){
     //access denied
