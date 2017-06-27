@@ -210,26 +210,25 @@ app.post('/ping', function(req, res){
 
 //step 1 oauth
 app.get('/test', function(req, res){
-  res.redirect('https://learn-lti.herokuapp.com/login/oauth2/auth?'+
-    'client_id=3536&response_type=code&redirect_uri=http://0.0.0.0:8080/test2')
 })
 
 //step 2 oauth
 app.get('/oauth', function(req,res){
-  console.log(req.query)
   if(req.query.error == 'access_denied'){
     //access denied
   }
   //all good
   else{
+    let code = req.query.code
 
-    let url = 'https://learn-lti.herokuapp.com/login/oauth2/token'
+    let url = 'https://umich-dev.instructure.com/login/oauth2/token'
 
     axios.post(url, {
-      client_id: '3536',
-      redirect_uri: 'http://0.0.0.0:8080/test2',
-      client_secret: '63b0b9ce3d9b23a487c2',
-      code: req.query.code
+      client_id: '85530000000000009',
+      redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
+      client_secret: 'TYTObhzFa47uR9ms7pJthHQ7QEOm7quGdx2xopPKic23WkfrJ3bkYhHibjjGpgxW',
+      code: req.query.code,
+      grant_type: 'authorization_code'
     }).then(r => console.log(r))
 
   }
