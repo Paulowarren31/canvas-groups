@@ -20,7 +20,12 @@ app.use(bp.urlencoded({extended: true}))
 
 var token = '8553~7G6yIufBJhp30vX9A6NYC68aHSEeBxlm0LalJI1ARASZ4UWFq9bXBhWZGx3dPZiV'
 
+var poor_idea = new Map();
+
 app.post('/', function(req, res){
+
+  console.log(req)
+
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
     .then(function(classes){
@@ -229,7 +234,11 @@ app.get('/oauth', function(req,res){
       client_secret: 'TYTObhzFa47uR9ms7pJthHQ7QEOm7quGdx2xopPKic23WkfrJ3bkYhHibjjGpgxW',
       code: req.query.code,
       grant_type: 'authorization_code'
-    }).then(r => console.log(r))
+    }).then(r => {
+
+      const access_token = r.data.access_token
+    
+    }console.log(r))
 
   }
 })
