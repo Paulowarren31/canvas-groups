@@ -238,7 +238,7 @@ app.get('/oauth', function(req,res){
 
       const access_token = r.data.access_token
     
-    }console.log(r))
+    })
 
   }
 })
