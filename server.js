@@ -62,6 +62,7 @@ app.post('/', function(req, res){
   })
 
 
+  /*
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
     .then(function(classes){
@@ -98,6 +99,7 @@ app.post('/', function(req, res){
     .catch(function(res){
       console.log(res)
     })
+  */
 })
 
 //all classes in the array now
