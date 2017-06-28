@@ -2,8 +2,9 @@ var express = require('express'),
   app     = express(),
   axios   = require('axios'),
   hbs     = require('express-handlebars'),
-  path    = require('path')
-SO      = require('simple-oauth2')
+  path    = require('path'),
+  SO      = require('simple-oauth2'),
+  fs      = require('fs')
 
 mongoose = require('mongoose')
 Schema = mongoose.Schema;
@@ -14,10 +15,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.engine('handlebars', hbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
+
 oauth2 = SO.create({
   client: {
     id: '85530000000000009',
-    secret: 'TYTObhzFa47uR9ms7pJthHQ7QEOm7quGdx2xopPKic23WkfrJ3bkYhHibjjGpgxW'
+    secret: Buffer.from(process.env.CANVAS_SECRET, 'base64').toString('ascii')
   },
   auth: {
     tokenHost: 'https://umich-dev.instructure.com',
@@ -64,12 +66,10 @@ app.post('/', function(req, res){
 })
 
 function gen_big(req, res, token){
-  console.log('main with token: '+token)
 
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
     .then(function(classes){
-      console.log('got classes with token:', token)
 
       classes = classes.data
       for(cl in classes){
@@ -88,7 +88,6 @@ function gen_big(req, res, token){
           if(big_classes.length == classes.length){
             handleClasses(big_classes, token, function(grouped_users, classes){
 
-              console.log('finished with token', token)
               res.render('home', {
                 title: 'Hey',
                 message: 'Hello there!',
@@ -249,16 +248,6 @@ app.post('/create', function(req,res){
       })
     })
   })
-})
-
-app.post('/ping', function(req, res){
-  console.log(req.body)
-  console.log('got a ping')
-  res.send({p: 'pong'})
-})
-
-//step 1 oauth
-app.get('/test', function(req, res){
 })
 
 //step 2 oauth
