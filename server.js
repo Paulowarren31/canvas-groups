@@ -16,8 +16,8 @@ app.set('view engine', 'handlebars')
 
 oauth2 = SO.create({
   client: {
-    id: '',
-    secret: ''
+    id: '85530000000000009',
+    secret: 'TYTObhzFa47uR9ms7pJthHQ7QEOm7quGdx2xopPKic23WkfrJ3bkYhHibjjGpgxW'
   },
   auth: {
     tokenHost: 'https://umich-dev.instructure.com',
@@ -286,7 +286,6 @@ app.get('/oauth', function(req,res){
 
       console.log('The resulting token: ', result);
       const token = oauth2.accessToken.create(result);
-      
 
       return res
         .status(200)
@@ -327,10 +326,6 @@ app.get('/oauth', function(req,res){
   */
 })
 
-//step 3?
-app.get('/test3', function(req, res){
-  res.send('idk')
-})
 
 // error handling
 app.use(function(err, req, res, next){
