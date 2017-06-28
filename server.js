@@ -21,14 +21,16 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
 
 mongoURL = 'mongodb://userFHA:PvgAjnjNANENU34Y@mongodb/sampledb'
 
-mongoose.connect(mongoURL)
+mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){console.log('connect')})
 
 var Cat = mongoose.model('Cat', { name: String  });
 
 var kitty = new Cat({ name: 'Zildjian'  });
+
 kitty.save(function (err) {
   if (err) {
     console.log(err);
+    console.log('ahh')
 
   } else {
     console.log('meow');
