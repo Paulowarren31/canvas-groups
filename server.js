@@ -3,6 +3,8 @@ var express = require('express'),
   axios   = require('axios'),
   hbs     = require('express-handlebars'),
   path    = require('path')
+SO      = require('simple-oauth2')
+
 mongoose = require('mongoose')
 Schema = mongoose.Schema;
 
@@ -12,6 +14,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.engine('handlebars', hbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
+oauth2 = SO.create({
+  client: {
+    id: '',
+    secret: ''
+  },
+  auth: {
+    tokenHost: 'https://umich-dev.instructure.com',
+    tokenPath: '/login/oauth2/token',
+    authorizePath: '/login/oauth2/auth'
+  },
+})
+
+authUri = oauth2.authorizationCode.authorizeURL({
+  redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
+})
 
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
@@ -47,19 +64,9 @@ var poor_idea = new Map();
 app.post('/', function(req, res){
 
   console.log(req.body)
+  res.redirect(authUri)
+  //res.redirect('https://umich-dev.instructure.com/login/oauth2/auth?client_id=85530000000000009&response_type=code&state=test&redirect_uri=https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth')
 
-  var query = Auth.findOne({'user_id': req.body.user_id}).exec(function(err, auth){
-    if(err) console.log(err)
-
-    if(!auth){
-      console.log('didnt find auth_token')
-      res.redirect('https://umich-dev.instructure.com/login/oauth2/auth?client_id=85530000000000009&response_type=code&state=test&redirect_uri=https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth')
-    }
-    else{
-      console.log('found one boy!!')
-      console.log(auth)
-    }
-  })
 
 
   /*
@@ -80,7 +87,7 @@ app.post('/', function(req, res){
             users: resp.data
           })
 
-          //done with async stuff
+  //done with async stuff
           if(big_classes.length == classes.length){
             handleClasses(big_classes, function(grouped_users, classes){
 
@@ -99,7 +106,7 @@ app.post('/', function(req, res){
     .catch(function(res){
       console.log(res)
     })
-  */
+    */
 })
 
 //all classes in the array now
@@ -266,6 +273,28 @@ app.get('/oauth', function(req,res){
 
     let url = 'https://umich-dev.instructure.com/login/oauth2/token'
 
+    options = {
+      code,
+    }
+
+    oauth2.authorizationCode.getToken(options, (error, result) => {
+      if (error) {
+        console.error('Access Token Error', error.message);
+        return res.json('Authentication failed');
+
+      }
+
+      console.log('The resulting token: ', result);
+      const token = oauth2.accessToken.create(result);
+      
+
+      return res
+        .status(200)
+        .json(token);
+    })
+  }
+
+  /*
     axios.post(url, {
       client_id: '85530000000000009',
       redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
@@ -278,7 +307,8 @@ app.get('/oauth', function(req,res){
 
       let access_token = r.data.access_token
       let user_id = r.data.user.id
-      
+
+
 
       var session = new Auth({user_id: '123', token: access_token, expires: 1})
 
@@ -294,6 +324,7 @@ app.get('/oauth', function(req,res){
     })
 
   }
+  */
 })
 
 //step 3?
