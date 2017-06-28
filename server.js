@@ -63,7 +63,6 @@ var poor_idea = new Map();
 
 app.post('/', function(req, res){
 
-  console.log(req.body)
   res.redirect(authUri)
   //res.redirect('https://umich-dev.instructure.com/login/oauth2/auth?client_id=85530000000000009&response_type=code&state=test&redirect_uri=https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth')
 
@@ -108,6 +107,46 @@ app.post('/', function(req, res){
     })
     */
 })
+
+function main(req, res, token){
+
+  var big_classes = []
+  axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
+    .then(function(classes){
+
+      classes = classes.data
+      for(cl in classes){
+        cl = classes[cl]
+        async function main(id, name){
+          resp = await axios.get('https://umich-dev.instructure.com/api/v1/courses/'+id
+            +'/students?access_token='+token)
+
+          big_classes.push({
+            name: name,
+            id: id,
+            users: resp.data
+          })
+
+          //done with async stuff
+          if(big_classes.length == classes.length){
+            handleClasses(big_classes, function(grouped_users, classes){
+
+              res.render('home', {
+                title: 'Hey',
+                message: 'Hello there!',
+                people: grouped_users,
+                classes: classes})
+
+            })
+          }
+        }
+        main(cl.id, cl.name);
+      }
+    })
+    .catch(function(res){
+      console.log(res)
+    })
+}
 
 //all classes in the array now
 function handleClasses(classes, callback){
@@ -287,9 +326,7 @@ app.get('/oauth', function(req,res){
       console.log('The resulting token: ', result);
       const token = oauth2.accessToken.create(result);
 
-      return res
-        .status(200)
-        .json(token);
+      main(req, res, token)
     })
   }
 
