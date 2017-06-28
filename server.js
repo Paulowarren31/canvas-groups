@@ -113,7 +113,7 @@ function handleClasses(classes, token, callback){
   dictionary = new Map();
 
 
-  getUserId().then(self_id => {
+  getUserId(token).then(self_id => {
     classes.forEach(function(cl){
       cl.users.forEach(function(user){
 
@@ -173,7 +173,7 @@ function handleClasses(classes, token, callback){
   })
 }
 
-async function getUserId(){
+async function getUserId(token){
   let url = 'https://umich-dev.instructure.com/api/v1/users/self?access_token='+token
   user = await axios.get(url)
   return user.data.id
