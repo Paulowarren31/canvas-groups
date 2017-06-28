@@ -16,10 +16,15 @@ app.engine('handlebars', hbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
 
+app_secret = Buffer.from(process.env.CANVAS_SECRET, 'base64').toString('ascii')
+
+console.log(app_secret)
+console.log(process.env.CANVAS_SECRET)
+
 oauth2 = SO.create({
   client: {
     id: '85530000000000009',
-    secret: Buffer.from(process.env.CANVAS_SECRET, 'base64').toString('ascii')
+    secret: app_secret,
   },
   auth: {
     tokenHost: 'https://umich-dev.instructure.com',
