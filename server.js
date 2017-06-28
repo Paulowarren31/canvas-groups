@@ -281,15 +281,7 @@ app.get('/oauth', function(req,res){
       console.log('The resulting token: ', result);
       const token = result.access_token
 
-      var session = new Auth({user_id: result.user.id, token: token, refresh: result.refresh_token})
-
-      session.save( err => {
-        if(err) console.log(err)
-        else{
-          console.log('saved session for id '+result.user.id)
-          main(req, res, token)
-        }
-      })
+      main(req, res, token)
     })
   }
 
