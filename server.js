@@ -63,7 +63,8 @@ app.post('/', function(req, res){
 
 })
 
-function main(req, res, token){
+function gen_big(req, res, token){
+  console.log('main with token: '+token)
 
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
@@ -278,10 +279,10 @@ app.get('/oauth', function(req,res){
 
       }
 
-      console.log('The resulting token: ', result);
       const token = result.access_token
+      console.log('The resulting token: ', token);
 
-      main(req, res, token)
+      gen_big(req, res, token)
     })
   }
 
