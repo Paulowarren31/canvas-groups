@@ -57,55 +57,10 @@ var bp = require('body-parser')
 app.use(bp.json())
 app.use(bp.urlencoded({extended: true}))
 
-var token = '8553~7G6yIufBJhp30vX9A6NYC68aHSEeBxlm0LalJI1ARASZ4UWFq9bXBhWZGx3dPZiV'
-
-var poor_idea = new Map();
-
 app.post('/', function(req, res){
 
   res.redirect(authUri)
-  //res.redirect('https://umich-dev.instructure.com/login/oauth2/auth?client_id=85530000000000009&response_type=code&state=test&redirect_uri=https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth')
 
-
-
-  /*
-  var big_classes = []
-  axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
-    .then(function(classes){
-
-      classes = classes.data
-      for(cl in classes){
-        cl = classes[cl]
-        async function main(id, name){
-          resp = await axios.get('https://umich-dev.instructure.com/api/v1/courses/'+id
-            +'/students?access_token='+token)
-
-          big_classes.push({
-            name: name,
-            id: id,
-            users: resp.data
-          })
-
-  //done with async stuff
-          if(big_classes.length == classes.length){
-            handleClasses(big_classes, function(grouped_users, classes){
-
-              res.render('home', {
-                title: 'Hey',
-                message: 'Hello there!',
-                people: grouped_users,
-                classes: classes})
-
-            })
-          }
-        }
-        main(cl.id, cl.name);
-      }
-    })
-    .catch(function(res){
-      console.log(res)
-    })
-    */
 })
 
 function main(req, res, token){
@@ -326,7 +281,15 @@ app.get('/oauth', function(req,res){
       console.log('The resulting token: ', result);
       const token = result.access_token
 
-      main(req, res, token)
+      var session = new Auth({user_id: result.user.id, token: token, refresh: result.refresh_token})
+
+      session.save( err => {
+        if(err) console.log(err)
+        else{
+          console.log('saved session for id '+result.user.id)
+          main(req, res, token)
+        }
+      })
     })
   }
 
