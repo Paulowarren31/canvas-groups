@@ -21,11 +21,18 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
 
 mongoURL = 'mongodb://userXY2:R4g2BeUTNjFljKDk@mongodb/auth-tokens'
 
+var a_schema = new mongoose.Schema({
+  user_id: String,
+  token: String,
+  expires: Number
+})
+
+var Auth;
+
 mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){
 
-  var Auth = mongoose.model('Auth', { user_id: String, 
-                                      token: String,
-                                      expires: Number});
+  Auth = mongoose.model('Auth', a_schema)
+
   console.log('connected to mongoDB')
 })
 
@@ -40,6 +47,19 @@ var poor_idea = new Map();
 app.post('/', function(req, res){
 
   console.log(req.body.user_id)
+
+  var query = Auth.findOne({'user_id': req.body.user_id}).exec(function(err, auth){
+    if(err) console.log(err)
+
+    if(!auth){
+      res.redirect('https://umich-dev.instructure/com/login/oauth2/auth?client_id=85530000000000009&response_type=code&state=YYY&redirect_uri=https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth')
+    }
+    else{
+      console.log('found one boy!!')
+      console.log(auth)
+    }
+  })
+
 
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
