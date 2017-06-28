@@ -21,22 +21,28 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
 
 mongoURL = 'mongodb://userPHF:pGoRK8ypLQAbjHxf@mongodb/sampledb'
 
-mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){console.log('connect')})
+mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){
 
-var Cat = mongoose.model('Cat', { name: String  });
 
-var kitty = new Cat({ name: 'Zildjian'  });
+  console.log('connect')
+  var Cat = mongoose.model('Cat', { name: String  });
 
-kitty.save(function (err) {
-  if (err) {
-    console.log(err);
-    console.log('ahh')
+  var kitty = new Cat({ name: 'Zildjian'  });
 
-  } else {
-    console.log('meow');
-  }
+  kitty.save(function (err) {
+    if (err) {
+      console.log(err);
+      console.log('ahh')
 
-});
+    } else {
+      console.log('meow');
+    }
+
+  });
+
+
+
+})
 
 var bp = require('body-parser')
 app.use(bp.json())
