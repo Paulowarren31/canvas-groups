@@ -19,29 +19,14 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
   mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
   mongoURLLabel = "";
 
-mongoURL = 'mongodb://userPHF:pGoRK8ypLQAbjHxf@mongodb/sampledb'
+mongoURL = 'mongodb://userXY2:R4g2BeUTNjFljKDk@mongodb/auth-tokens'
 
 mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){
 
-
-  console.log('connect')
-  var Cat = mongoose.model('Cat', { name: String  });
-
-  var kitty = new Cat({ name: 'Zildjian'  });
-
-  kitty.save(function (err) {
-    if (err) {
-      console.log(err);
-      console.log('ahh')
-
-    } else {
-      console.log('meow');
-    }
-
-  });
-
-
-
+  var Auth = mongoose.model('Auth', { user_id: String, 
+                                      token: String,
+                                      expires: Number});
+  console.log('connected to mongoDB')
 })
 
 var bp = require('body-parser')
@@ -54,7 +39,7 @@ var poor_idea = new Map();
 
 app.post('/', function(req, res){
 
-  console.log(req)
+  console.log(req.body.user_id)
 
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
@@ -266,7 +251,20 @@ app.get('/oauth', function(req,res){
       grant_type: 'authorization_code'
     }).then(r => {
 
+      console.log(r)
+
       const access_token = r.data.access_token
+
+      var session = new Auth({user_id: '123', token: access_token, expires: 1})
+
+      session.save(function(err){
+        if(err){
+          console.log(err)
+        } else {
+          console.log('saved session')
+          res.redirect('/')
+        }
+      })
 
     })
 
