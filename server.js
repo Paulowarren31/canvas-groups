@@ -53,6 +53,7 @@ app.post('/', function(req, res){
 
     if(!auth){
       console.log('didnt find auth_token')
+      res.redirect('https://umich-dev.instructure/login/oauth2/auth?client_id=85530000000000009&response_type=code&state=test&redirect_uri=https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth')
     }
     else{
       console.log('found one boy!!')
