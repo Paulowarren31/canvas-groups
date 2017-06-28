@@ -46,7 +46,7 @@ var poor_idea = new Map();
 
 app.post('/', function(req, res){
 
-  console.log(req.body.user_id)
+  console.log(req.body)
 
   var query = Auth.findOne({'user_id': req.body.user_id}).exec(function(err, auth){
     if(err) console.log(err)
@@ -274,9 +274,11 @@ app.get('/oauth', function(req,res){
       grant_type: 'authorization_code'
     }).then(r => {
 
-      console.log(r)
+      console.log(r.data)
 
-      const access_token = r.data.access_token
+      let access_token = r.data.access_token
+      let user_id = r.data.user.id
+      
 
       var session = new Auth({user_id: '123', token: access_token, expires: 1})
 
