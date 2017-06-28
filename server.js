@@ -324,7 +324,7 @@ app.get('/oauth', function(req,res){
       }
 
       console.log('The resulting token: ', result);
-      const token = oauth2.accessToken.create(result);
+      const token = result.access_token
 
       main(req, res, token)
     })
