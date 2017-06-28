@@ -69,6 +69,7 @@ function gen_big(req, res, token){
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
     .then(function(classes){
+      console.log('got classes with token:', token)
 
       classes = classes.data
       for(cl in classes){
@@ -85,8 +86,9 @@ function gen_big(req, res, token){
 
           //done with async stuff
           if(big_classes.length == classes.length){
-            handleClasses(big_classes, function(grouped_users, classes){
+            handleClasses(big_classes, token, function(grouped_users, classes){
 
+              console.log('finished with token', token)
               res.render('home', {
                 title: 'Hey',
                 message: 'Hello there!',
@@ -98,6 +100,7 @@ function gen_big(req, res, token){
         }
         main(cl.id, cl.name);
       }
+
     })
     .catch(function(res){
       console.log(res)
@@ -105,7 +108,8 @@ function gen_big(req, res, token){
 }
 
 //all classes in the array now
-function handleClasses(classes, callback){
+function handleClasses(classes, token, callback){
+  console.log('handleClasses token: ' + token)
   dictionary = new Map();
 
 
@@ -276,7 +280,6 @@ app.get('/oauth', function(req,res){
       if (error) {
         console.error('Access Token Error', error.message);
         return res.json('Authentication failed');
-
       }
 
       const token = result.access_token
