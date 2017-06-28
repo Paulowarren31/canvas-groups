@@ -52,6 +52,8 @@ app.post('/', function(req, res){
     if(err) console.log(err)
 
     if(!auth){
+      console.log('didnt find auth_token')
+
       res.redirect('https://umich-dev.instructure/com/login/oauth2/auth?client_id=85530000000000009&response_type=code&state=YYY&redirect_uri=https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth')
     }
     else{
@@ -61,6 +63,7 @@ app.post('/', function(req, res){
   })
 
 
+  /*
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
     .then(function(classes){
@@ -97,6 +100,7 @@ app.post('/', function(req, res){
     .catch(function(res){
       console.log(res)
     })
+  */
 })
 
 //all classes in the array now
