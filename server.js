@@ -2,17 +2,39 @@ var express = require('express'),
   app     = express(),
   axios   = require('axios'),
   hbs     = require('express-handlebars'),
-  path    = require('path');
+  path    = require('path')
+mongoose = require('mongoose')
+Schema = mongoose.Schema;
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.engine('handlebars', hbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
+
+
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
   ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
   mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
   mongoURLLabel = "";
+
+mongoURL = 'mongodb://userFHA:PvgAjnjNANENU34Y@mongodb/sampledb'
+
+mongoose.connect(mongoURL)
+
+var Cat = mongoose.model('Cat', { name: String  });
+
+var kitty = new Cat({ name: 'Zildjian'  });
+kitty.save(function (err) {
+  if (err) {
+    console.log(err);
+
+  } else {
+    console.log('meow');
+  }
+
+});
 
 var bp = require('body-parser')
 app.use(bp.json())
@@ -20,7 +42,12 @@ app.use(bp.urlencoded({extended: true}))
 
 var token = '8553~7G6yIufBJhp30vX9A6NYC68aHSEeBxlm0LalJI1ARASZ4UWFq9bXBhWZGx3dPZiV'
 
+var poor_idea = new Map();
+
 app.post('/', function(req, res){
+
+  console.log(req)
+
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
     .then(function(classes){
@@ -147,7 +174,7 @@ app.post('/create', function(req,res){
     +token
 
   console.log('server got create request for group name '+ req.body.group_name
-                +' and ids: '+ req.body.user_ids)
+    +' and ids: '+ req.body.user_ids)
 
   //post request to create group
   axios.post(url, {
@@ -210,27 +237,30 @@ app.post('/ping', function(req, res){
 
 //step 1 oauth
 app.get('/test', function(req, res){
-  res.redirect('https://learn-lti.herokuapp.com/login/oauth2/auth?'+
-    'client_id=3536&response_type=code&redirect_uri=http://0.0.0.0:8080/test2')
 })
 
 //step 2 oauth
 app.get('/oauth', function(req,res){
-  console.log(req.query)
   if(req.query.error == 'access_denied'){
     //access denied
   }
   //all good
   else{
+    let code = req.query.code
 
-    let url = 'https://learn-lti.herokuapp.com/login/oauth2/token'
+    let url = 'https://umich-dev.instructure.com/login/oauth2/token'
 
     axios.post(url, {
-      client_id: '3536',
-      redirect_uri: 'http://0.0.0.0:8080/test2',
-      client_secret: '63b0b9ce3d9b23a487c2',
-      code: req.query.code
-    }).then(r => console.log(r))
+      client_id: '85530000000000009',
+      redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
+      client_secret: 'TYTObhzFa47uR9ms7pJthHQ7QEOm7quGdx2xopPKic23WkfrJ3bkYhHibjjGpgxW',
+      code: req.query.code,
+      grant_type: 'authorization_code'
+    }).then(r => {
+
+      const access_token = r.data.access_token
+
+    })
 
   }
 })
