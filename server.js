@@ -251,7 +251,9 @@ app.post('/create', function(req,res){
               let join_url = host + '/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
               console.log('sending update membership', join_url)
 
-              axios.put(join_url, {}, {
+              axios.put(join_url, {
+                workflow_state: 'accepted'
+              }, {
                 headers: { Authorization: "Bearer " + token }
               }).then(r => {
                 console.log('accepted invite for user id: '+ id, token)
@@ -259,7 +261,7 @@ app.post('/create', function(req,res){
 
 
             })
-          })
+          }).catch(err => {console.log('INVITE ERROR');console.log(err);})
 
         }
 
