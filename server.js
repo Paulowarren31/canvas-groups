@@ -183,7 +183,7 @@ async function getUserId(token){
   return user.data.id
 }
 
-async function getUserEmail(id){
+async function getUserEmail(id, token){
   let url = 'https://umich-dev.instructure.com/api/v1/users/'+id
     +'/profile?access_token='+token
 
@@ -217,7 +217,6 @@ app.post('/create', function(req,res){
 
     let grp_id = r.data.id
     let invite_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id
-      +'/invite?access_token='+token
 
     let group_url = 'https://umich-dev.instructure.com/groups/' + grp_id
 
@@ -227,7 +226,7 @@ app.post('/create', function(req,res){
 
     // for each user id, get their email
     user_ids.forEach(function(id){
-      getUserEmail(id).then(e => {
+      getUserEmail(id, token).then(e => {
         user_emails.push(e)
 
         //all user emails ready
