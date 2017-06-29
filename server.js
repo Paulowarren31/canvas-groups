@@ -214,7 +214,7 @@ app.post('/create', function(req,res){
     headers: { Authorization: "Bearer " + token }
   }).then(r => {
     console.log('create group with token ',token)
-    console.log('create group got ', t.data)
+    console.log('create group got ', r.data)
 
     let grp_id = r.data.id
     let invite_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id
