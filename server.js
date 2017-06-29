@@ -159,14 +159,14 @@ function handleClasses(classes, token, callback){
 
     classes = []
 
-    classes_to_users.forEach(function(val, key){
+    classes_to_users.forEach((val, key) => {
       c_c = key.split(',').length
       students = val
       s_ids = []
 
-      students.forEach(function(student){
-        s_ids.push(student.id)
-      })
+      students.forEach(student => { s_ids.push(student.id) })
+
+      console.log('s_ids: ', s_ids)
 
       classes.push({'classes': key, 'students': val, 'c_count': c_c, 's_ids': s_ids})
     })
@@ -189,8 +189,9 @@ function getUserEmail(id, token, callback){
 
   try{
     axios.get(url).then(profile => {
-      console.log('got email ', profile.data)
-      callback(profile.data.primary_email)
+      let email = profile.data.primary_email
+      console.log('got email ', email)
+      callback(email)
     })
   } catch(e){
     console.error('exception', e)
@@ -219,8 +220,8 @@ app.post('/create', function(req,res){
   }, {
     headers: { Authorization: "Bearer " + token }
   }).then(r => {
-    console.log('create group with token ',token)
-    console.log('create group got ', r.data)
+    //console.log('create group with token ',token)
+    //console.log('create group got ', r.data)
 
     let grp_id = r.data.id
 
@@ -263,6 +264,9 @@ app.post('/create', function(req,res){
 
 
             })
+
+            res.send({group_url: group_url}) //pass group url back to frontend
+
           }).catch(err => {console.log('INVITE ERROR');console.log(err);})
 
         }

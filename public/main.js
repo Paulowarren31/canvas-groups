@@ -25,6 +25,9 @@ $(function(){
       url: url,
       success: function(r){
         url = r.url
+        console.log(r)
+        console.log('got url from server', url)
+        console.log('#link-'+group_name)
         $('#link-'+group_name).removeClass('hidden')
         $('#link-'+group_name).attr("href", url)
 
