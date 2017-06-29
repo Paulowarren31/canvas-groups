@@ -196,7 +196,7 @@ async function getUserEmail(id){
 //group_name: name of group
 //user_ids: list of ids separated by  , to be invited to the group
 app.post('/create', function(req,res){
-  let token = req.body.token
+  var token = req.body.token
 
   let url = 'https://umich-dev.instructure.com/api/v1/groups?access_token='
     +token
@@ -213,6 +213,7 @@ app.post('/create', function(req,res){
   }, {
     headers: { Authorization: "Bearer " + token }
   }).then(r => {
+    console.log('create group with token ',token)
 
     let grp_id = r.data.id
     let invite_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id
@@ -238,6 +239,7 @@ app.post('/create', function(req,res){
           }, {
             headers: { Authorization: "Bearer " + token }
           }).then(r => {
+            console.log('send group invite with token ',token)
             res.send({url: group_url})
 
             user_ids.forEach(function(id){
@@ -247,7 +249,7 @@ app.post('/create', function(req,res){
                 headers: { Authorization: "Bearer " + token }
               }).then(r => {
                 console.log(r)
-                console.log('accepted invite for user id: '+ id)
+                console.log('accepted invite for user id: '+ id, token)
               })
             })
           })
