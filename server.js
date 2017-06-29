@@ -234,7 +234,7 @@ app.post('/create', function(req,res){
 
     // for each user id, get their email
     user_ids.forEach(function(id){
-      getUserEmail(id, token).then(e => {
+      getUserEmail(id, token, e => {
         console.log('got user email' , e)
         user_emails.push(e)
 
