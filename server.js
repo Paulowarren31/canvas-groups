@@ -70,14 +70,16 @@ app.post('/', function(req, res){
 
 function gen_big(req, res, token){
 
+  console.log('gen big', token)
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
+    console.log('got courses for token ', token)
     .then(function(classes){
 
       classes = classes.data
       for(cl in classes){
         cl = classes[cl]
-        async function main(id, name){
+        async function main(id, name, token){
           resp = await axios.get('https://umich-dev.instructure.com/api/v1/courses/'+id
             +'/students?access_token='+token)
 
@@ -90,6 +92,7 @@ function gen_big(req, res, token){
           //done with async stuff
           if(big_classes.length == classes.length){
             handleClasses(big_classes, token, function(grouped_users, classes){
+              console.log('handle classes done with token ', token)
 
               res.render('home', {
                 title: 'Hey',
@@ -100,7 +103,7 @@ function gen_big(req, res, token){
             })
           }
         }
-        main(cl.id, cl.name);
+        main(cl.id, cl.name, token);
       }
 
     })
