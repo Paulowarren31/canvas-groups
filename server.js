@@ -263,6 +263,7 @@ app.get('/oauth', function(req,res){
   }
   //all good
   else{
+    console.log('all good')
     let code = req.query.code
 
     let url = 'https://umich-dev.instructure.com/login/oauth2/token'
@@ -270,8 +271,12 @@ app.get('/oauth', function(req,res){
     options = {
       code,
     }
+    console.log(options)
 
     oauth2.authorizationCode.getToken(options, (error, result) => {
+      console.log('error',  error)
+      console.log('result', result)
+
       if (error) {
         console.error('Access Token Error', error.message);
         return res.json('Authentication failed');
