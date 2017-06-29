@@ -19,12 +19,11 @@ app.set('view engine', 'handlebars')
 app_secret = Buffer.from(process.env.CANVAS_SECRET, 'base64').toString('ascii')
 
 console.log(app_secret)
-console.log(process.env.CANVAS_SECRET)
 
 oauth2 = SO.create({
   client: {
     id: '85530000000000009',
-    secret: app_secret,
+    secret: '8553~cEBB1jPSStv2vRKopB8N198ZU9JzI73Vz8HY1M35PixfPKTxFbY9H3ielhNcVt2Y',
   },
   auth: {
     tokenHost: 'https://umich-dev.instructure.com',
@@ -51,7 +50,6 @@ var a_schema = new mongoose.Schema({
   expires: Number
 })
 
-var Auth;
 
 mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){
 
