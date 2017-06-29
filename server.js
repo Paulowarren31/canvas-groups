@@ -230,38 +230,28 @@ app.post('/create', function(req,res){
 
 
     let user_ids = req.body.user_ids.split(',')
-    let user_emails = []
 
     // for each user id, get their email
-    user_ids.forEach(function(id){
-      getUserEmail(id, token, e => {
-        console.log('got user email' , e)
-        user_emails.push(e)
+    getUserId(token).then(user_id => {
+      user_ids.push(user_id)
+      axios.put(invite_url, {
+        members: user_ids
+      }, {
+        headers: { Authorization: "Bearer " + token }
+      }).then(r => {
+        console.log('updated group')
+        console.log(r)
 
-        //all user emails ready
-        if(user_emails.length == user_ids.length){
-          console.log('user emails ready')
+        user_ids.forEach(function(id){
+          let join_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
 
-          //send invite
-          axios.post(invite_url, {
-            invitees: user_emails
-          }, {
+          axios.put(join_url, {}, {
             headers: { Authorization: "Bearer " + token }
           }).then(r => {
-            console.log('send group invite with token ',token)
-
-            user_ids.forEach(function(id){
-              let join_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
-
-              axios.put(join_url, {}, {
-                headers: { Authorization: "Bearer " + token }
-              }).then(r => {
-                console.log(r)
-                console.log('accepted invite for user id: '+ id, token)
-              })
-            })
+            console.log(r)
+            console.log('accepted invite for user id: '+ id, token)
           })
-        }
+        })
       })
     })
   })
