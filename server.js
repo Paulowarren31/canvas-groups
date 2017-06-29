@@ -180,15 +180,22 @@ async function getUserId(token){
   return user.data.id
 }
 
-async function getUserEmail(id, token){
+function getUserEmail(id, token, callback){
   console.log('getUserEmail', token)
   let url = 'https://umich-dev.instructure.com/api/v1/users/'+id
     +'/profile?access_token='+token
 
   console.log(url)
 
-  profile = await axios.get(url)
-  return profile.data.primary_email
+  try{
+    axios.get(url).then(profile => {
+      console.log('got email ', profile.data)
+      callback(profile.data.primary_email)
+    })
+  } catch(e){
+    console.error('exception', e)
+    callback('')
+  }
 }
 
 //creates a new group with given ids and name of group
@@ -228,10 +235,12 @@ app.post('/create', function(req,res){
     // for each user id, get their email
     user_ids.forEach(function(id){
       getUserEmail(id, token).then(e => {
+        console.log('got user email' , e)
         user_emails.push(e)
 
         //all user emails ready
         if(user_emails.length == user_ids.length){
+          console.log('user emails ready')
 
           //send invite
           axios.post(invite_url, {
