@@ -107,7 +107,7 @@ function shared_classes(req, res, token){
 
     })
     .catch(function(res){
-      console.log(res)
+      console.log(res.message)
     })
 }
 
@@ -174,7 +174,8 @@ function handleClasses(classes, token, callback){
 
     callback(users, classes)
 
-  })
+  }).catch(err =>{console.log(err.message)})
+
 }
 
 async function getUserId(token){
@@ -255,7 +256,9 @@ app.post('/create', function(req,res){
                 headers: { Authorization: "Bearer " + token }
               }).then(r => {
                 console.log('accepted invite for user id: '+ id, token)
-              })
+              }).catch(err =>{console.log(err.message)})
+
+
             })
           })
 
@@ -264,7 +267,8 @@ app.post('/create', function(req,res){
       })
     })
 
-  })
+  }).catch(err =>{console.log(err.message)})
+
 })
 
 //step 2 oauth
