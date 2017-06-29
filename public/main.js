@@ -24,13 +24,15 @@ $(function(){
       type: 'POST',
       url: url,
       success: function(r){
-        url = r.url
-        console.log(r)
+        url = r.group_url
         console.log('got url from server', url)
         console.log('#link-'+group_name)
+
+        //show the link to the new group
         $('#link-'+group_name).removeClass('hidden')
         $('#link-'+group_name).attr("href", url)
 
+        //hide the create group button
         $(e.target).addClass('hidden')
       },
       error: function(a, status, error){
