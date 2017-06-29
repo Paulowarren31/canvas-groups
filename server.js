@@ -196,11 +196,13 @@ async function getUserEmail(id){
 //group_name: name of group
 //user_ids: list of ids separated by  , to be invited to the group
 app.post('/create', function(req,res){
+  let token = req.body.token
+
   let url = 'https://umich-dev.instructure.com/api/v1/groups?access_token='
     +token
 
   console.log('server got create request for group name '+ req.body.group_name
-    +' and ids: '+ req.body.user_ids)
+    +' and ids: '+ req.body.user_ids + ' with token ' + token)
 
   //post request to create group
   axios.post(url, {
