@@ -166,6 +166,9 @@ function handleClasses(classes, token, callback){
 
       students.forEach(student => { s_ids.push(student.id) })
 
+      //remove spaces and commas
+      s_ids = s_ids.toString().replace('/ ','/').replace('/,','/')
+
       console.log('s_ids: ', s_ids)
 
       classes.push({'classes': key, 'students': val, 'c_count': c_c, 's_ids': s_ids})
