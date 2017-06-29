@@ -174,7 +174,7 @@ function handleClasses(classes, token, callback){
 
     callback(users, classes)
 
-  }).catch(err =>{console.log(err.message)})
+  }).catch(err =>{console.log(err)})
 
 }
 
@@ -185,10 +185,7 @@ async function getUserId(token){
 }
 
 function getUserEmail(id, token, callback){
-  console.log('getUserEmail', token)
   let url = host + '/api/v1/users/'+ id +'/profile?access_token='+token
-
-  console.log(url)
 
   try{
     axios.get(url).then(profile => {
@@ -247,16 +244,18 @@ app.post('/create', function(req,res){
           }, {
             headers: { Authorization: "Bearer " + token }
           }).then(r => {
+
             console.log('updated group')
 
             user_ids.forEach(function(id){
               let join_url = host + '/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
+              console.log('sending update membership', join_url)
 
               axios.put(join_url, {}, {
                 headers: { Authorization: "Bearer " + token }
               }).then(r => {
                 console.log('accepted invite for user id: '+ id, token)
-              }).catch(err =>{console.log(err.message)})
+              }).catch(err =>{console.log(err)})
 
 
             })
@@ -267,7 +266,7 @@ app.post('/create', function(req,res){
       })
     })
 
-  }).catch(err =>{console.log(err.message)})
+  }).catch(err =>{console.log(err)})
 
 })
 
