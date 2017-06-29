@@ -68,7 +68,7 @@ app.post('/', function(req, res){
 
 })
 
-function gen_big(req, res, token){
+function shared_classes(req, res, token){
 
   console.log('gen big', token)
   var big_classes = []
@@ -95,10 +95,9 @@ function gen_big(req, res, token){
               console.log('handle classes done with token ', token)
 
               res.render('home', {
-                title: 'Hey',
-                message: 'Hello there!',
                 people: grouped_users,
-                classes: classes})
+                classes: classes,
+                token: token})
 
             })
           }
@@ -285,7 +284,7 @@ app.get('/oauth', function(req,res){
       const token = result.access_token
       console.log('The resulting token: ', token);
 
-      gen_big(req, res, token)
+      shared_classes(req, res, token)
     })
   }
 
