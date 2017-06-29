@@ -223,6 +223,7 @@ app.post('/create', function(req,res){
     console.log('create group got ', r.data)
 
     let grp_id = r.data.id
+
     let invite_url = host + '/api/v1/groups/'+ grp_id + '/invite'
 
     let group_url = host + '/groups/' + grp_id
@@ -240,15 +241,16 @@ app.post('/create', function(req,res){
         if(user_emails.length == user_ids.length){
 
           axios.post(invite_url, {
-            invitees: user_ids
+            invitees: user_emails
           }, {
             headers: { Authorization: "Bearer " + token }
           }).then(r => {
 
             console.log('updated group')
 
-            user_ids.forEach(function(id){
+            user_ids.forEach( id => {
               let join_url = host + '/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
+
               console.log('sending update membership', join_url)
 
               axios.put(join_url, {
