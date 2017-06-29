@@ -70,12 +70,9 @@ app.post('/', function(req, res){
 
 function shared_classes(req, res, token){
 
-  console.log('gen big', token)
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
     .then(function(classes){
-      console.log('got courses for token ', token)
-
       classes = classes.data
       for(cl in classes){
         cl = classes[cl]
@@ -184,8 +181,11 @@ async function getUserId(token){
 }
 
 async function getUserEmail(id, token){
+  console.log('getUserEmail', token)
   let url = 'https://umich-dev.instructure.com/api/v1/users/'+id
     +'/profile?access_token='+token
+
+  console.log(url)
 
   profile = await axios.get(url)
   return profile.data.primary_email
@@ -214,6 +214,7 @@ app.post('/create', function(req,res){
     headers: { Authorization: "Bearer " + token }
   }).then(r => {
     console.log('create group with token ',token)
+    console.log('create group got ', t.data)
 
     let grp_id = r.data.id
     let invite_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id
@@ -239,7 +240,6 @@ app.post('/create', function(req,res){
             headers: { Authorization: "Bearer " + token }
           }).then(r => {
             console.log('send group invite with token ',token)
-            res.send({url: group_url})
 
             user_ids.forEach(function(id){
               let join_url = 'https://umich-dev.instructure.com/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
@@ -273,11 +273,8 @@ app.get('/oauth', function(req,res){
     options = {
       code,
     }
-    console.log(options)
 
     oauth2.authorizationCode.getToken(options, (error, result) => {
-      console.log('error',  error)
-      console.log('result', result)
 
       if (error) {
         console.error('Access Token Error', error.message);
@@ -285,7 +282,6 @@ app.get('/oauth', function(req,res){
       }
 
       const token = result.access_token
-      console.log('The resulting token: ', token);
 
       shared_classes(req, res, token)
     })
