@@ -225,7 +225,7 @@ app.post('/create', function(req,res){
     console.log('create group got ', r.data)
 
     let grp_id = r.data.id
-    let invite_url = host + '/api/v1/groups/'+ grp_id + '/invite
+    let invite_url = host + '/api/v1/groups/'+ grp_id + '/invite'
 
     let group_url = host + '/groups/' + grp_id
 
