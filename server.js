@@ -73,8 +73,8 @@ function gen_big(req, res, token){
   console.log('gen big', token)
   var big_classes = []
   axios.get('https://umich-dev.instructure.com/api/v1/courses?access_token='+token)
-    console.log('got courses for token ', token)
     .then(function(classes){
+      console.log('got courses for token ', token)
 
       classes = classes.data
       for(cl in classes){
