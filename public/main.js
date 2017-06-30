@@ -23,7 +23,7 @@ $(function(){
     $.ajax({
       type: 'POST',
       url: url,
-      success: function(r){
+      success: (r) => {
         url = r.group_url
         console.log('got url from server', url)
         console.log('#link-'+group_name)
@@ -35,7 +35,7 @@ $(function(){
         //hide the create group button
         $(e.target).addClass('hidden')
       },
-      error: function(a, status, error){
+      error: (a, status, error) => {
         console.log(status)
         console.log(error)
       }, 
@@ -45,12 +45,12 @@ $(function(){
     })
   })
 
-  $('#student-btn').on('click', function(e){
+  $('#student-btn').on('click', e => {
     $('#student-list').removeClass('hidden')
     $('#classes-list').addClass('hidden')
   })
 
-  $('#class-btn').on('click', function(e){
+  $('#class-btn').on('click', e => {
     $('#classes-list').removeClass('hidden')
     $('#student-list').addClass('hidden')
   })

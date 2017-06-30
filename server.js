@@ -66,9 +66,11 @@ app.use(bp.json())
 app.use(bp.urlencoded({extended: true}))
 
 app.post('/', function(req, res){
-
   res.redirect(authUri)
+})
 
+app.get('/', function(req, res){
+  res.redirect(authUri)
 })
 
 function shared_classes(req, res, token){
@@ -264,8 +266,6 @@ app.post('/create', function(req,res){
               }).then(r => {
                 console.log('accepted invite for user id: '+ id, token)
               }).catch(err =>{console.log(err)})
-
-
             })
 
             res.send({group_url: group_url}) //pass group url back to frontend
