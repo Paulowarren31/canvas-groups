@@ -259,7 +259,12 @@ function getUserEmail(id, token, callback){
 //group_name: name of group
 //user_ids: list of ids separated by  , to be invited to the group
 app.post('/create', function(req,res){
-  var token = req.body.token
+  var token = req.cookies.c_token
+
+  if(!token){
+    res.send('error, please refresh and get a new token')
+  }
+
   let url = host + '/api/v1/groups?access_token=' + token
 
   console.log('server got create request for group name '+ req.body.group_name

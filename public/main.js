@@ -6,16 +6,10 @@ $(function(){
   $('[id^=create]').on('click', e => {
     ids = e.target.id.split('-')[2]
     group_name = e.target.id.split('-')[1]
-    token = $.cookie('canvas_token')
-
-    if(!token) {
-      alert('unable to find canvas token, please refresh and make sure cookies are enabled');
-    }
 
     data = {
       user_ids: ids,
       group_name: group_name,
-      token: token
     }
 
     let url = 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/create' 
