@@ -126,14 +126,14 @@ function shared_classes(req, res, token, user){
 
           //done with async stuff
           if(big_classes.length == classes.length){
-            handleClasses(big_classes, token, function(grouped_users, classes){
+            handleClasses(big_classes, token, (grouped_users, classes, groups) => {
               console.log('handle classes done with token ', token)
-
-
               res.render('home', {
                 people: grouped_users,
                 classes: classes,
+                groups: groups
               })
+
 
             })
           }
@@ -151,13 +151,6 @@ function shared_classes(req, res, token, user){
 function handleClasses(classes, token, callback){
   console.log('handleClasses token: ' + token)
   dictionary = new Map();
-
-  let groups_endpoint = host + '/api/v1/users/self/groups'
-
-  axios.get(groups_endpoint, {headers: { Authorization: "Bearer " + token }})
-    .then(groups => {
-      console.log(groups)
-    })
 
   getUserId(token).then(self_id => {
     classes.forEach(function(cl){
@@ -213,11 +206,29 @@ function handleClasses(classes, token, callback){
 
       console.log('s_ids: ', s_ids)
 
-      classes.push({'classes': key, 'students': val, 'c_count': c_c, 's_ids': s_ids})
+      classes.push({'classes': key, 'students': val, 'c_count': c_c,
+        's_ids': s_ids, 'added': false, 'link': ''})
     })
 
+    let groups_endpoint = host + '/api/v1/users/self/groups'
+    axios.get(groups_endpoint, {headers: { Authorization: "Bearer " + token }})
+      .then(r => {
+        let groups = r.data
 
-    callback(users, classes)
+        groups.forEach(group => {
+          classes.forEach(cls => {
+            console.log('grp name: ', group.name)
+            console.log('cls name: ', cls.classes)
+
+            if(group.name == cls.classes){
+              cls.added = true
+              cls.link = 'https://umich-dev.instructure.com/groups/'+ group.id
+            }
+          })
+        })
+
+        callback(users, classes)
+      })
 
   }).catch(err =>{console.log(err)})
 }

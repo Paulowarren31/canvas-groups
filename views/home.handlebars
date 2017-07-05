@@ -20,8 +20,11 @@
       <div class="col-lg-3 col-md-6">{{this.classes}}</div>
       <div class="col-lg-3 col-md-6">{{this.students.length}} People</div>
       <div class="col-lg-3 col-md-6">
+        {{#if this.added}}
+        <a id="link-{{this.classes}}" href="{{this.link}}" >Link</a>
+        {{else}}
         <button id="create-{{this.classes}}-{{this.s_ids}}" class="btn btn-sm btn-primary">Create Group</button>
-        <a id="link-{{this.classes}}" class="hidden">Link</a>
+        {{/if}}
       </div>
     </li>
     {{/each}}
