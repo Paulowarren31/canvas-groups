@@ -75,6 +75,7 @@ app.post('/', function(req, res){
   else if(req.cookies.r_token){
     refresh(req.cookies.r_token, (token, user) => {
       console.log('refreshed token ', token)
+      res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
       shared_classes(req, res, token, user)
     })
   }
