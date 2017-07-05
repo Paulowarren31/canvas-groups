@@ -92,8 +92,8 @@ function refresh(token, callback){
     refresh_token: token,
     client_secret: process.env.CANVAS_SECRET
   }).then(r => {
-    console.log('got refreshed token: ', r.access_token)
-    callback(r.access_token)
+    console.log('got refreshed token: ', r.data)
+    callback(r.data.access_token)
   }).catch(err =>{console.log(err)})
 }
 
