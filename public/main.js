@@ -1,7 +1,8 @@
 function complete(){
 }
 $(function(){
-  console.log($.cookie('canvas_token'))
+  console.log($.cookie('test'))
+  console.log($.cookie('c_token'))
   $('[data-toggle="tooltip"]').tooltip()
 
   $('[id^=create]').on('click', e => {

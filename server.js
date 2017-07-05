@@ -97,11 +97,12 @@ function shared_classes(req, res, token){
               console.log('handle classes done with token ', token)
 
               res.cookie('test', 'test', {expires: new Date(Date.now() + 3600000), secure: true})
+              res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
 
               res.render('home', {
                 people: grouped_users,
                 classes: classes,
-                token: token})
+                })
 
             })
           }
