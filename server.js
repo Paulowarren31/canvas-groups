@@ -69,12 +69,30 @@ app.use(bp.urlencoded({extended: true}))
 
 app.post('/', function(req, res){
   console.log('Cookies: ', req.cookies)
+
   if(req.cookies.c_token){
     let token = req.cookies.c_token
     shared_classes(req, res, token)
   }
+  else if(req.cookies.r_token){
+    let token = refresh(req.cookies.r_token)
+    console.log('refreshed token ', token)
+  }
   else res.redirect(authUri)
 })
+
+function refresh(token){
+  let r_url = host + '/login/oauth2/token'
+  axios.post(r_url, {
+    grant_type: 'refresh_token',
+    client_id: '85530000000000009',
+    client_secret: process.env.CANVAS_SECRET
+  }).then(r => {
+    console.log('Refresh')
+    console.log(r)
+    return r.access_token
+  })
+}
 
 app.get('/', function(req, res){
   res.redirect(authUri)
@@ -314,12 +332,15 @@ app.get('/oauth', function(req,res){
       console.log(result)
 
       const token = result.access_token
+      const ref_token = result.refresh_token
 
-      res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
+      res.cookie('c_token', token, {expires: new Date(Date.now() + 1), secure: true})
+      res.cookie('r_token', ref_token, {expires: new Date(Date.now() + 9999999), secure: true})
 
       shared_classes(req, res, token)
     })
   }
+})
 
   /*
     axios.post(url, {
@@ -352,7 +373,6 @@ app.get('/oauth', function(req,res){
 
   }
   */
-})
 
 
 // error handling
