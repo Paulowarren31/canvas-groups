@@ -337,8 +337,8 @@ app.get('/oauth', function(req,res){
       const token = result.access_token
       const ref_token = result.refresh_token
 
-      res.cookie('c_token', token, {expires: new Date(Date.now() + 1), secure: true})
-      res.cookie('r_token', ref_token, {expires: new Date(Date.now() + 9999999), secure: true})
+      res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
+      res.cookie('r_token', ref_token, {secure: true})
 
       shared_classes(req, res, token)
     })
