@@ -5,6 +5,7 @@ var express = require('express'),
   path    = require('path'),
   SO      = require('simple-oauth2'),
   fs      = require('fs')
+  cookieParser = require('cookie-parser')
 
 
 var host = 'https://umich-dev.instructure.com'
@@ -14,6 +15,7 @@ Schema = mongoose.Schema;
 
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser())
 
 app.engine('handlebars', hbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
@@ -66,6 +68,7 @@ app.use(bp.json())
 app.use(bp.urlencoded({extended: true}))
 
 app.post('/', function(req, res){
+  console.log('Cookies: ', req.cookies)
   res.redirect(authUri)
 })
 

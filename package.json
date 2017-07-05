@@ -16,7 +16,8 @@
     "mongoose": "^4.11.0",
     "morgan": "^1.7.0",
     "object-assign": "4.1.0",
-    "simple-oauth2": "^1.3.0"
+    "simple-oauth2": "^1.3.0",
+    "cookie-parser": "*"
   },
   "engine": {
     "node": "*",
