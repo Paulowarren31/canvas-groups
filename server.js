@@ -152,6 +152,12 @@ function handleClasses(classes, token, callback){
   console.log('handleClasses token: ' + token)
   dictionary = new Map();
 
+  let groups_endpoint = host + '/api/v1/users/self/groups'
+
+  axios.get(groups_endpoint, {headers: { Authorization: "Bearer " + token }})
+    .then(groups => {
+      console.log(groups)
+    })
 
   getUserId(token).then(self_id => {
     classes.forEach(function(cl){
