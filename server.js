@@ -69,7 +69,11 @@ app.use(bp.urlencoded({extended: true}))
 
 app.post('/', function(req, res){
   console.log('Cookies: ', req.cookies)
-  res.redirect(authUri)
+  if(req.cookies.c_token){
+    let token = req.cookies.c_token
+    shared_classes(req, res, token)
+  }
+  else res.redirect(authUri)
 })
 
 app.get('/', function(req, res){
@@ -99,8 +103,6 @@ function shared_classes(req, res, token){
             handleClasses(big_classes, token, function(grouped_users, classes){
               console.log('handle classes done with token ', token)
 
-              res.cookie('test', 'test', {expires: new Date(Date.now() + 3600000), secure: true})
-              res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
 
               res.render('home', {
                 people: grouped_users,
@@ -309,8 +311,11 @@ app.get('/oauth', function(req,res){
         console.error('Access Token Error', error.message);
         return res.json('Authentication failed');
       }
+      console.log(result)
 
       const token = result.access_token
+
+      res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
 
       shared_classes(req, res, token)
     })
