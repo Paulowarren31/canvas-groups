@@ -96,6 +96,8 @@ function shared_classes(req, res, token){
             handleClasses(big_classes, token, function(grouped_users, classes){
               console.log('handle classes done with token ', token)
 
+              res.cookie('test', 'test', {expires: new Date(Date.now() + 3600000), secure: true})
+
               res.render('home', {
                 people: grouped_users,
                 classes: classes,
