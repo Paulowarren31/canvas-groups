@@ -5,7 +5,7 @@ var express = require('express'),
   path    = require('path'),
   SO      = require('simple-oauth2'),
   fs      = require('fs')
-  cookieParser = require('cookie-parser')
+cookieParser = require('cookie-parser')
 
 
 var host = 'https://umich-dev.instructure.com'
@@ -49,19 +49,17 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
 
 mongoURL = 'mongodb://userXY2:R4g2BeUTNjFljKDk@mongodb/auth-tokens'
 
-var a_schema = new mongoose.Schema({
+var UserSchema = new mongoose.Schema({
   user_id: String,
-  token: String,
-  expires: Number
+  name: String,
+  accepted: Boolean
 })
-
 
 mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){
-
-  Auth = mongoose.model('Auth', a_schema)
-
   console.log('connected to mongoDB')
 })
+
+var User = mongoose.model('User', UserSchema)
 
 var bp = require('body-parser')
 app.use(bp.json())
@@ -75,9 +73,9 @@ app.post('/', function(req, res){
     shared_classes(req, res, token)
   }
   else if(req.cookies.r_token){
-    refresh(req.cookies.r_token, token => {
+    refresh(req.cookies.r_token, (token, user) => {
       console.log('refreshed token ', token)
-      shared_classes(req, res, token)
+      shared_classes(req, res, token, user)
     })
   }
   else res.redirect(authUri)
@@ -93,7 +91,7 @@ function refresh(token, callback){
     client_secret: process.env.CANVAS_SECRET
   }).then(r => {
     console.log('got refreshed token: ', r.data)
-    callback(r.data.access_token)
+    callback(r.data.access_token, r.data.user)
   }).catch(err =>{console.log(err)})
 }
 
@@ -101,7 +99,14 @@ app.get('/', function(req, res){
   res.redirect(authUri)
 })
 
-function shared_classes(req, res, token){
+function shared_classes(req, res, token, user){
+
+  if(user){
+    var query = User.findOne({ 'user_id': user.id }).exec(u => {
+      console.log('found user ')
+      console.log(u)
+    })
+  }
 
   var big_classes = []
   axios.get(host + '/api/v1/courses?access_token='+token)
@@ -128,7 +133,7 @@ function shared_classes(req, res, token){
               res.render('home', {
                 people: grouped_users,
                 classes: classes,
-                })
+              })
 
             })
           }
@@ -209,7 +214,6 @@ function handleClasses(classes, token, callback){
     callback(users, classes)
 
   }).catch(err =>{console.log(err)})
-
 }
 
 async function getUserId(token){
@@ -239,7 +243,6 @@ function getUserEmail(id, token, callback){
 //user_ids: list of ids separated by  , to be invited to the group
 app.post('/create', function(req,res){
   var token = req.body.token
-
   let url = host + '/api/v1/groups?access_token=' + token
 
   console.log('server got create request for group name '+ req.body.group_name
@@ -307,7 +310,6 @@ app.post('/create', function(req,res){
     })
 
   }).catch(err =>{console.log(err)})
-
 })
 
 //step 2 oauth
@@ -332,51 +334,25 @@ app.get('/oauth', function(req,res){
         console.error('Access Token Error', error.message);
         return res.json('Authentication failed');
       }
+
       console.log(result)
 
       const token = result.access_token
       const ref_token = result.refresh_token
 
+      let user = result.user
+
+      let new_user = new User({user_id: user.id, name: user.name, accepted: false})
+
+      new_user.save(err => {console.log('saved user!')})
+
       res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
       res.cookie('r_token', ref_token, {secure: true})
 
-      shared_classes(req, res, token)
+      shared_classes(req, res, token, user)
     })
   }
 })
-
-  /*
-    axios.post(url, {
-      client_id: '85530000000000009',
-      redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
-      client_secret: 'TYTObhzFa47uR9ms7pJthHQ7QEOm7quGdx2xopPKic23WkfrJ3bkYhHibjjGpgxW',
-      code: req.query.code,
-      grant_type: 'authorization_code'
-    }).then(r => {
-
-      console.log(r.data)
-
-      let access_token = r.data.access_token
-      let user_id = r.data.user.id
-
-
-
-      var session = new Auth({user_id: '123', token: access_token, expires: 1})
-
-      session.save(function(err){
-        if(err){
-          console.log(err)
-        } else {
-          console.log('saved session')
-          res.redirect('/')
-        }
-      })
-
-    })
-
-  }
-  */
-
 
 // error handling
 app.use(function(err, req, res, next){
