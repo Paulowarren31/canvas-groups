@@ -83,9 +83,11 @@ app.post('/', function(req, res){
 
 function refresh(token){
   let r_url = host + '/login/oauth2/token'
+  console.log('trying to refresh token', token)
   axios.post(r_url, {
     grant_type: 'refresh_token',
     client_id: '85530000000000009',
+    refresh_token: token,
     client_secret: process.env.CANVAS_SECRET
   }).then(r => {
     console.log('Refresh')
