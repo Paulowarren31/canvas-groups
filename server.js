@@ -92,8 +92,9 @@ function refresh(token, callback){
     refresh_token: token,
     client_secret: process.env.CANVAS_SECRET
   }).then(r => {
+    console.log('got refreshed token: ', r.access_token)
     callback(r.access_token)
-  })
+  }).catch(err =>{console.log(err)})
 }
 
 app.get('/', function(req, res){
@@ -141,7 +142,7 @@ function shared_classes(req, res, token){
     })
 }
 
-//all classes in the array now
+//all classes in the array now.catch()
 function handleClasses(classes, token, callback){
   console.log('handleClasses token: ' + token)
   dictionary = new Map();
