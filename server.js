@@ -259,7 +259,7 @@ function getUserEmail(id, token, callback){
 //group_name: name of group
 //user_ids: list of ids separated by  , to be invited to the group
 app.post('/create', function(req,res){
-  var token = req.cookies.c_token
+  var token = req.body.token
 
   if(!token){
     res.send('error, please refresh and get a new token')
