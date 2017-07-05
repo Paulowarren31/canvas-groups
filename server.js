@@ -75,13 +75,15 @@ app.post('/', function(req, res){
     shared_classes(req, res, token)
   }
   else if(req.cookies.r_token){
-    let token = refresh(req.cookies.r_token)
-    console.log('refreshed token ', token)
+    refresh(req.cookies.r_token, token => {
+      console.log('refreshed token ', token)
+      shared_classes(req, res, token)
+    })
   }
   else res.redirect(authUri)
 })
 
-function refresh(token){
+function refresh(token, callback){
   let r_url = host + '/login/oauth2/token'
   console.log('trying to refresh token', token)
   axios.post(r_url, {
@@ -90,9 +92,7 @@ function refresh(token){
     refresh_token: token,
     client_secret: process.env.CANVAS_SECRET
   }).then(r => {
-    console.log('Refresh')
-    console.log(r)
-    return r.access_token
+    callback(r.access_token)
   })
 }
 
