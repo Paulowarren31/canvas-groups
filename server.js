@@ -119,7 +119,7 @@ function shared_classes(req, res, token, user){
               console.log('handle classes done with token ', token)
 
               grouped_users.sort( (a, b) => {
-                return a.classes.length - b.classes.length
+                return b.classes.length - a.classes.length
               })
 
               res.render('home', {
