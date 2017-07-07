@@ -1,9 +1,8 @@
 <div class="container">
-  <h2 class="text-center"> Students who Share Your Classes </h2>
+  <h2 class="text-center pt-3"> Students who Share Your Classes </h2>
   <div class="row my-3">
-    <div class="col-sm-4"><button id="student-btn"class="btn btn-primary btn-long">Students</button></div>
-    <div class="col-sm-4"><button id="class-btn"class="btn btn-primary btn-long">Group List</button></div>
-    <div class="col-sm-4"><button id="create-btn"class="btn btn-primary btn-long">Create a group
+    <div class="col-sm-6"><button id="student-btn"class="btn btn-primary btn-long">Students in my classes</button></div>
+    <div class="col-sm-6"><button id="class-btn"class="btn btn-primary btn-long">Groups I'm in</button></div>
     </div>
     <div class="col-sm-12">
       <ul id="student-list" class="list-group">
@@ -30,17 +29,17 @@
             {{/if}}
           </div>
         </li>
+        <div id="s-show" class="hidden" >
         {{#each this.students}}
-        <div id="s-show">
           <li class="list-group-item ">
             <label class="custom-control custom-checkbox">
-              <input id="{{this.id}}"type="checkbox" class="custom-control-input">
+              <input id="{{this.id}}" type="checkbox" class="custom-control-input">
               <span class="custom-control-indicator"></span>
               <span class="custom-control-description">{{this.name}}</span>
             </label>
           </li>
-        </div>
         {{/each}}
+        </div>
         {{/each}}
       </ul>
     </div>

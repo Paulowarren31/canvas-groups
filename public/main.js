@@ -58,3 +58,5 @@ $(function(){
     $('#student-list').addClass('hidden')
   })
 })
+
+function createClass(){}
