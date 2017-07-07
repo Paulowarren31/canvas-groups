@@ -6,24 +6,27 @@ var express = require('express'),
   SO      = require('simple-oauth2'),
   fs      = require('fs')
 cookieParser = require('cookie-parser')
+  bp = require('body-parser')
+  mongoose = require('mongoose')
 
 
 var host = 'https://umich-dev.instructure.com'
 
-mongoose = require('mongoose')
 Schema = mongoose.Schema;
-
-
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(cookieParser())
 
 app.engine('handlebars', hbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser())
+app.use(bp.json())
+app.use(bp.urlencoded({extended: true}))
 
-app_secret = process.env.CANVAS_SECRET
+var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+  ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
+  mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+  mongoURLLabel = "";
 
-console.log(app_secret)
 
 oauth2 = SO.create({
   client: {
@@ -41,12 +44,6 @@ authUri = oauth2.authorizationCode.authorizeURL({
   redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
 })
 
-
-var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
-  ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-  mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
-  mongoURLLabel = "";
-
 mongoURL = 'mongodb://userXY2:R4g2BeUTNjFljKDk@mongodb/auth-tokens'
 
 var UserSchema = new mongoose.Schema({
@@ -60,10 +57,6 @@ mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){
 })
 
 var User = mongoose.model('User', UserSchema)
-
-var bp = require('body-parser')
-app.use(bp.json())
-app.use(bp.urlencoded({extended: true}))
 
 app.post('/', function(req, res){
   console.log('Cookies: ', req.cookies)
@@ -103,10 +96,6 @@ app.get('/', function(req, res){
 function shared_classes(req, res, token, user){
 
   if(user){
-    var query = User.findOne({ 'user_id': user.id }).exec(u => {
-      console.log('found user ')
-      console.log(u)
-    })
   }
 
   var big_classes = []

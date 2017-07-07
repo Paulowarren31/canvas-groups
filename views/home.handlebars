@@ -1,32 +1,44 @@
 <div class="container">
   <h2 class="text-center"> Students who Share Your Classes </h2>
   <div class="row my-3">
-    <div class="col-sm-6"><button id="student-btn"class="btn btn-primary btn-long">Students</button></div>
-    <div class="col-sm-6"><button id="class-btn"class="btn btn-primary btn-long">Group List</button></div>
+    <div class="col-sm-4"><button id="student-btn"class="btn btn-primary btn-long">Students</button></div>
+    <div class="col-sm-4"><button id="class-btn"class="btn btn-primary btn-long">Group List</button></div>
+    <div class="col-sm-4"><button id="create-btn"class="btn btn-primary btn-long">Create a group
+    </div>
+    <ul id="student-list" class="list-group">
+      {{#each people}}
+      <li class="list-group-item row">
+        <div class="col-lg-4">{{this.name}}</div>
+        <div class="col-lg-4 text-primary" data-toggle="tooltip" data-placement="top" title="{{this.classes}}">you share {{this.classes.length}} classes</div>
+        <div class="col-lg-4"i>{{this.login_id}}</div>
+      </li>
+      </li>
+      {{/each}}
+    </ul>
+    <ul id="classes-list" class="list-group hidden text-sm-center text-md-left">
+      {{#each classes}}
+      <li class="list-group-item row">{{this.name}}
+        <div class="col-lg-3 col-md-6"><strong>{{this.c_count}} Shared Classes</strong></div>
+        <div class="col-lg-3 col-md-6">{{this.classes}}</div>
+        <div class="col-lg-3 col-md-6">{{this.students.length}} People</div>
+        <div class="col-lg-3 col-md-6">
+          {{#if this.added}}
+          <a id="link-{{this.classes}}" target="_top" href="{{this.link}}" >Link</a>
+          {{else}}
+          <button id="create-{{this.classes}}-{{this.s_ids}}" class="btn btn-sm btn-primary">Create Group</button>
+          {{/if}}
+        </div>
+      </li>
+      {{#each this.students}}
+      <li id="s-show-{{this.classes}}" class="list-group-item ">
+        <label class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input">
+          <span class="custom-control-indicator"></span>
+          <span class="custom-control-description">{{this.name}}</span>
+        </label>
+      </li>
+      {{/each}}
+
+      {{/each}}
+    </ul>
   </div>
-  <ul id="student-list" class="list-group">
-    {{#each people}}
-    <li class="list-group-item row">
-      <div class="col-lg-4">{{this.name}}</div>
-      <div class="col-lg-4 text-primary" data-toggle="tooltip" data-placement="top" title="{{this.classes}}">you share {{this.classes.length}} classes</div>
-      <div class="col-lg-4"i>{{this.login_id}}</div>
-    </li>
-    {{/each}}
-  </ul>
-  <ul id="classes-list" class="list-group hidden text-sm-center text-md-left">
-    {{#each classes}}
-    <li class="list-group-item row">{{this.name}}
-      <div class="col-lg-3 col-md-6"><strong>{{this.c_count}} Shared Classes</strong></div>
-      <div class="col-lg-3 col-md-6">{{this.classes}}</div>
-      <div class="col-lg-3 col-md-6">{{this.students.length}} People</div>
-      <div class="col-lg-3 col-md-6">
-        {{#if this.added}}
-        <a id="link-{{this.classes}}" target="_top" href="{{this.link}}" >Link</a>
-        {{else}}
-        <button id="create-{{this.classes}}-{{this.s_ids}}" class="btn btn-sm btn-primary">Create Group</button>
-        {{/if}}
-      </div>
-    </li>
-    {{/each}}
-  </ul>
-</div>
