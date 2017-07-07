@@ -45,7 +45,7 @@ $(function(){
   */
 
   $('#create-btn').on('click', e => {
-    $('#s-show').toggleClass('hidden')
+    $('[id=s-show]').toggleClass('hidden')
   })
 
   $('#student-btn').on('click', e => {

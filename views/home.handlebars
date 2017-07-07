@@ -31,13 +31,15 @@
           </div>
         </li>
         {{#each this.students}}
-        <li id="s-show" class="list-group-item ">
-          <label class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">{{this.name}}</span>
-          </label>
-        </li>
+        <div id="s-show">
+          <li class="list-group-item ">
+            <label class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">{{this.name}}</span>
+            </label>
+          </li>
+        </div>
         {{/each}}
         {{/each}}
       </ul>
