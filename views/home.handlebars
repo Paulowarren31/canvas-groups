@@ -20,7 +20,9 @@
         <li class="list-group-item row">{{this.name}}
           <div class="col-lg-3 col-md-6"><strong>{{this.c_count}} Shared Classes</strong></div>
           <div class="col-lg-3 col-md-6">{{this.classes}}</div>
-          <div class="col-lg-3 col-md-6">{{this.students.length}} People</div>
+          <div class="col-lg-3 col-md-6">
+            {{this.students.length}} 
+            People </div>
           <div class="col-lg-3 col-md-6">
             {{#if this.added}}
             <a id="link-{{this.classes}}" target="_top" href="{{this.link}}" >Go to Group</a>
