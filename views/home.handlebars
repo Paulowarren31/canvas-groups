@@ -1,8 +1,8 @@
 <div class="container">
   <h2 class="text-center pt-3"> Students who Share Your Classes </h2>
   <div class="row my-3">
-    <div class="col-sm-6"><button id="student-btn"class="btn btn-primary btn-long">Students in my classes</button></div>
-    <div class="col-sm-6"><button id="class-btn"class="btn btn-primary btn-long">Groups I'm in</button></div>
+    <div class="col-sm-6"><button id="student-btn"class="btn blu btn-long">Students in my classes</button></div>
+    <div class="col-sm-6"><button id="class-btn"class="btn blu btn-long">Groups I'm in</button></div>
     </div>
     <div class="col-sm-12">
       <ul id="student-list" class="list-group">
@@ -23,7 +23,7 @@
           <div class="col-lg-3 col-md-6">{{this.students.length}} People</div>
           <div class="col-lg-3 col-md-6">
             {{#if this.added}}
-            <a id="link-{{this.classes}}" target="_top" href="{{this.link}}" >Link</a>
+            <a id="link-{{this.classes}}" target="_top" href="{{this.link}}" >Go to Group</a>
             {{else}}
             <button id="create-{{this.classes}}-{{this.s_ids}}" class="btn btn-sm btn-primary">Create Group</button>
             {{/if}}

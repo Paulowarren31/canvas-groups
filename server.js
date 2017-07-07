@@ -27,7 +27,6 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
   mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
   mongoURLLabel = "";
 
-
 oauth2 = SO.create({
   client: {
     id: '85530000000000009',
@@ -161,10 +160,8 @@ function handleClasses(classes, token, callback){
       })
     })
 
-
     users = []
     classes_to_users = new Map();
-
 
     dictionary.forEach(function(item){
       //filter out users who only share 1 class
