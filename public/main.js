@@ -1,8 +1,7 @@
-function complete(){
-}
 $(function(){
   $('[data-toggle="tooltip"]').tooltip()
 
+  /*
   $('[id^=create]').on('click', e => {
     ids = e.target.id.split('-')[2]
     group_name = e.target.id.split('-')[1]
@@ -42,6 +41,11 @@ $(function(){
       data: data,
       dataType: 'json'
     })
+  })
+  */
+
+  $('#create-btn').on('click', e => {
+    $('#s-show').toggleClass('hidden')
   })
 
   $('#student-btn').on('click', e => {
