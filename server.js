@@ -55,7 +55,7 @@ mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){
   console.log('connected to mongoDB')
   var MyModel = mongoose.model('Test', new Schema({ name: String }));
   // Works
-  MyModel.findOne(function(error, result) { console.log(error); console.log(result});
+  MyModel.findOne(function(error, result) { console.log(error); console.log(result);});
 })
 
 var User = mongoose.model('User', UserSchema)
