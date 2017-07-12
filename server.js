@@ -5,9 +5,9 @@ var express = require('express'),
   path    = require('path'),
   SO      = require('simple-oauth2'),
   fs      = require('fs')
-  cookieParser = require('cookie-parser')
-  bp = require('body-parser')
-  mongoose = require('mongoose')
+cookieParser = require('cookie-parser')
+bp = require('body-parser')
+mongoose = require('mongoose')
 
 
 var host = 'https://umich-dev.instructure.com'
@@ -53,6 +53,9 @@ var UserSchema = new mongoose.Schema({
 
 mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){
   console.log('connected to mongoDB')
+  var MyModel = mongoose.model('Test', new Schema({ name: String }));
+  // Works
+  MyModel.findOne(function(error, result) { console.log(error); console.log(result});
 })
 
 var User = mongoose.model('User', UserSchema)
