@@ -43,7 +43,7 @@ authUri = oauth2.authorizationCode.authorizeURL({
   redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
 })
 
-mongoURL = 'mongodb://userYQE:TAUgtWlOtfGQOxw5@mongodb/sampledb'
+mongoURL = 'mongodb://paulo:password@mongodb/test'
 
 var UserSchema = new mongoose.Schema({
   user_id: String,
