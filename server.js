@@ -5,7 +5,7 @@ var express = require('express'),
   path    = require('path'),
   SO      = require('simple-oauth2'),
   fs      = require('fs')
-cookieParser = require('cookie-parser')
+  cookieParser = require('cookie-parser')
   bp = require('body-parser')
   mongoose = require('mongoose')
 
@@ -43,7 +43,7 @@ authUri = oauth2.authorizationCode.authorizeURL({
   redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
 })
 
-mongoURL = 'mongodb://userXY2:R4g2BeUTNjFljKDk@mongodb/auth-tokens'
+mongoURL = 'mongodb://mongo_admin:mongo_admin@mongodb/auth-tokens'
 
 var UserSchema = new mongoose.Schema({
   user_id: String,
