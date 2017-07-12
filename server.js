@@ -43,7 +43,7 @@ authUri = oauth2.authorizationCode.authorizeURL({
   redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
 })
 
-mongoURL = 'mongodb://admin:TVxReNhFdL718iA3@mongodb/admin'
+mongoURL = 'mongodb://userYQE:TAUgtWlOtfGQOxw5@mongodb/sampledb'
 
 var UserSchema = new mongoose.Schema({
   user_id: String,
@@ -51,11 +51,14 @@ var UserSchema = new mongoose.Schema({
   accepted: Boolean
 })
 
-mongoose.connect(mongoURL, {useMongoClient: true}).then(function(){
+mongoose.connect(mongoURL, function(err){
+  if(err) console.log(err);
   console.log('connected to mongoDB')
+
   var MyModel = mongoose.model('Test', new Schema({ name: String }));
   // Works
   MyModel.findOne(function(error, result) { console.log(error); console.log(result);});
+
 })
 
 var User = mongoose.model('User', UserSchema)
