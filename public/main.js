@@ -44,6 +44,9 @@ $(function(){
   })
   */
 
+  $('[id^="add"]').on('click', e => {
+    id = e.target.id.split('-')[1]
+  })
   $('#create-btn').on('click', e => {
     $('[id=s-show]').toggleClass('hidden')
   })
