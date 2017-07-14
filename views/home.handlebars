@@ -1,5 +1,10 @@
+<!-- TODO --> 
+<!-- people plural people --> 
+<!-- change up the navigation at the top --> 
+<!-- font to LatoWeb --> 
+<!-- add in chat --> 
 <div class="container">
-  <h2 class="text-center pt-3"> Students who Share Your Classes </h2>
+  <h2 class="text-center pt-3"> Smart Groups </h2>
   <div class="row my-3">
     <div class="col-sm-6"><button id="student-btn"class="btn blu btn-long">Students in my classes</button></div>
     <div class="col-sm-6"><button id="class-btn"class="btn blu btn-long">Groups I'm in</button></div>
@@ -18,11 +23,13 @@
       <ul id="classes-list" class="list-group hidden text-sm-center text-md-left">
         {{#each classes}}
         <li class="list-group-item row">{{this.name}}
-          <div class="col-lg-3 col-md-6"><strong>{{this.c_count}} Shared Classes</strong></div>
-          <div class="col-lg-3 col-md-6">{{this.classes}}</div>
+          <div class="col-lg-3 col-md-6"><strong>{{this.classes}}</strong></div>
+          <div class="col-lg-3 col-md-6">{{this.c_count}} Shared Classes</div>
           <div class="col-lg-3 col-md-6">
-            {{this.students.length}} 
-            People </div>
+            <span class="badge badge-default badge-pill">{{this.students.length}}</span>
+            People 
+          </div>
+
           <div class="col-lg-3 col-md-6">
             {{#if this.added}}
             <a id="link-{{this.classes}}" target="_top" href="{{this.link}}" >Go to Group</a>
