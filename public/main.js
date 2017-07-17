@@ -52,11 +52,18 @@ $(function(){
   })
 
   $('#student-btn').on('click', e => {
+
+    $('#student-btn').removeClass('bold')
+    $('#class-btn').addClass('bold')
+
     $('#student-list').removeClass('hidden')
     $('#classes-list').addClass('hidden')
   })
 
   $('#class-btn').on('click', e => {
+    $('#classes-btn').removeClass('bold')
+    $('#student-btn').addClass('bold')
+
     $('#classes-list').removeClass('hidden')
     $('#student-list').addClass('hidden')
   })
