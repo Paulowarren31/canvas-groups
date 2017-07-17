@@ -3,53 +3,108 @@
 <!-- change up the navigation at the top -->
 <!-- font to LatoWeb -->
 <!-- add in chat -->
+<nav class="navbar navbar-light bg-faded">
+  <span class="navbar-text">
+    Smart Groups
+  </span>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+      <a class="nav-link" id="student-btn" href="#">Students <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="class-btn" href="#">Groups i'm in</a>
+    </li>
+  </ul>
+</nav>
+
 <div class="container">
-  <h2 class="text-center pt-3"> Smart Groups </h2>
-  <div class="row my-3">
-    <div class="col-sm-6"><button id="student-btn"class="btn blu btn-long">Students in my classes</button></div>
-    <div class="col-sm-6"><button id="class-btn"class="btn blu btn-long">Groups I'm in</button></div>
-  </div>
-  <div class="col-sm-12">
-    <ul id="student-list" class="list-group">
-      {{#each people}}
-      <li class="list-group-item row">
-        <div class="col-lg-4">{{this.name}}</div>
-        <div class="col-lg-4 text-primary" data-toggle="tooltip" data-placement="top" title="{{this.classes}}">you share {{this.classes.length}} classes</div>
-        <div class="col-lg-4"i>{{this.login_id}}</div>
-      </li>
-      </li>
-      {{/each}}
-    </ul>
-    <ul id="classes-list" class="list-group hidden text-sm-center text-md-left">
-      {{#each classes}}
-      <li class="list-group-item row">{{this.name}}
+  <div class="row">
+    <div class="col-sm-12">
+      <table id="student-list" class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Shared Classes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each people}}
+          <tr>
+            <th scope="row">{{@index}}</th>
+            <td>{{this.name}}</td>
+            <td>{{this.login_id}}</td>
+            <td class="text-primary" data-toggle="tooltip" data-placement="top" title="{{this.classes}}">{{this.classes.length}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <table id="classes-list" class="table hidden">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Group</th>
+            <th>Students</th>
+            <th>Shared Classes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each classes}}
+          <tr>
+            <th scope="row">{{@index}}</th>
+            <th scope="row">{{this.classes}}</th>
+            <td>
+              <span class="badge badge-default badge-pill">{{this.students.length}}</span>
+            </td>
+            <td>
+              <span class="badge badge-default badge-pill">{{this.c_count}}</span>
+            </td>
+            <td>
+              {{#if this.added}}
+              <a id="link-{{this.classes}}" target="_top" href="{{this.link}}" >Go to Group</a>
+              {{else}}
+              <button id="create-{{this.classes}}-{{this.s_ids}}" class="btn btn-sm btn-primary">Create Group</button>
+              {{/if}}
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+
+      </table>
+      <!--
+        <ul id="classes-list" class="list-group hidden text-sm-center text-md-left">
+        {{#each classes}}
+        <li class="list-group-item row">
         <div class="col-lg-3 col-md-6"><strong>{{this.classes}}</strong></div>
         <div class="col-lg-3 col-md-6">{{this.c_count}} Shared Classes</div>
         <div class="col-lg-3 col-md-6">
-          <span class="badge badge-default badge-pill">{{this.students.length}}</span>
-          People
+        <span class="badge badge-default badge-pill">{{this.students.length}}</span>
+        People
         </div>
 
         <div class="col-lg-3 col-md-6">
-          {{#if this.added}}
-          <a id="link-{{this.classes}}" target="_top" href="{{this.link}}" >Go to Group</a>
-          {{else}}
-          <button id="create-{{this.classes}}-{{this.s_ids}}" class="btn btn-sm btn-primary">Create Group</button>
-          {{/if}}
+        {{#if this.added}}
+        <a id="link-{{this.classes}}" target="_top" href="{{this.link}}" >Go to Group</a>
+        {{else}}
+        <button id="create-{{this.classes}}-{{this.s_ids}}" class="btn btn-sm btn-primary">Create Group</button>
+        {{/if}}
         </div>
-      </li>
-      <div id="s-show" class="hidden" >
+        </li>
+        <div id="s-show" class="hidden" >
         {{#each this.students}}
         <li class="list-group-item ">
-          <label class="custom-control custom-checkbox">
-            <input id="{{this.id}}" type="checkbox" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">{{this.name}}</span>
-          </label>
+        <label class="custom-control custom-checkbox">
+        <input id="{{this.id}}" type="checkbox" class="custom-control-input">
+        <span class="custom-control-indicator"></span>
+        <span class="custom-control-description">{{this.name}}</span>
+        </label>
         </li>
         {{/each}}
-      </div>
-      {{/each}}
-    </ul>
+        </div>
+        </ul>
+      -->
+    </div>
   </div>
 </div>
