@@ -24,9 +24,10 @@ $(function(){
         url = r.group_url
         console.log('got url from server', url)
 
+
         //show the link to the new group
-        $('#link-'+group_name).removeClass('hidden')
-        $('#link-'+group_name).attr("href", url)
+        $(e.target.nextSibling).removeClass('hidden')
+        $(e.target.nextSibling).attr("href", url)
 
         //hide the create group button
         $(e.target).addClass('hidden')

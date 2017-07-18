@@ -127,9 +127,12 @@ function shared_classes(req, res, token, user){
             handleClasses(big_classes, token, (grouped_users, classes, groups) => {
               console.log('handle classes done with token ', token)
 
+              //sort by descending # of classes matched
               grouped_users.sort( (a, b) => {
                 return b.classes.length - a.classes.length
               })
+
+              //remove 
 
               res.render('home', {
                 people: grouped_users,
