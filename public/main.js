@@ -1,7 +1,6 @@
 $(function(){
   $('[data-toggle="tooltip"]').tooltip()
 
-  /*
   $('[id^=create]').on('click', e => {
     ids = e.target.id.split('-')[2]
     group_name = e.target.id.split('-')[1]
@@ -21,10 +20,9 @@ $(function(){
     $.ajax({
       type: 'POST',
       url: url,
-      success: (r) => {
+      success: (r) => { // on success the groups url is returned
         url = r.group_url
         console.log('got url from server', url)
-        console.log('#link-'+group_name)
 
         //show the link to the new group
         $('#link-'+group_name).removeClass('hidden')
@@ -42,7 +40,6 @@ $(function(){
       dataType: 'json'
     })
   })
-  */
 
   $('[id^="add"]').on('click', e => {
     id = e.target.id.split('-')[1]
@@ -53,16 +50,16 @@ $(function(){
 
   $('#student-btn').on('click', e => {
 
-    $('#student-btn').removeClass('bold')
-    $('#class-btn').addClass('bold')
+    $('#student-btn').addClass('bold')
+    $('#class-btn').removeClass('bold')
 
     $('#student-list').removeClass('hidden')
     $('#classes-list').addClass('hidden')
   })
 
   $('#class-btn').on('click', e => {
-    $('#classes-btn').removeClass('bold')
-    $('#student-btn').addClass('bold')
+    $('#class-btn').addClass('bold')
+    $('#student-btn').removeClass('bold')
 
     $('#classes-list').removeClass('hidden')
     $('#student-list').addClass('hidden')
