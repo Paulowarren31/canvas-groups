@@ -35,7 +35,6 @@ $(function(){
         console.log(status)
         console.log(error)
       }, 
-      complete: complete,
       data: data,
       dataType: 'json'
     })
