@@ -375,7 +375,6 @@ app.get('/oauth', function(req,res){
         return res.json('Authentication failed');
       }
 
-      console.log(result)
 
       const token = result.access_token
       const ref_token = result.refresh_token
@@ -385,7 +384,7 @@ app.get('/oauth', function(req,res){
 
       User.findOne({ 'user_id': id }, (err, user) => {
         if(err) console.log(err)
-        console.log(user)
+        console.log('found user: ', user)
       })
 
       var user = new User({user_id: id, name: name, accepted: false})
