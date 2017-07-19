@@ -17,7 +17,7 @@ $(function(){
       token: token
     }
 
-    let url = 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/create' 
+    let url = 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/create'
     $.ajax({
       type: 'POST',
       url: url,
@@ -26,17 +26,17 @@ $(function(){
         console.log('got url from server', url)
         console.log('#link-'+group_name)
 
-        //show the link to the new group
+  //show the link to the new group
         $('#link-'+group_name).removeClass('hidden')
         $('#link-'+group_name).attr("href", url)
 
-        //hide the create group button
+  //hide the create group button
         $(e.target).addClass('hidden')
       },
       error: (a, status, error) => {
         console.log(status)
         console.log(error)
-      }, 
+      },
       complete: complete,
       data: data,
       dataType: 'json'
@@ -53,16 +53,21 @@ $(function(){
 
   $('#student-btn').on('click', e => {
 
-    $('#student-btn').removeClass('bold')
-    $('#class-btn').addClass('bold')
+    if($('classes-btn').hasClass('bold')){
+      $('#classes-btn').removeClass('bold')
+      $('#student-btn').addClass('bold')
+    }
 
     $('#student-list').removeClass('hidden')
     $('#classes-list').addClass('hidden')
   })
 
   $('#class-btn').on('click', e => {
-    $('#classes-btn').removeClass('bold')
-    $('#student-btn').addClass('bold')
+
+    if($('student-btn').hasClass('bold')){
+      $('#student-btn').removeClass('bold')
+      $('#class-btn').addClass('bold')
+    }
 
     $('#classes-list').removeClass('hidden')
     $('#student-list').addClass('hidden')

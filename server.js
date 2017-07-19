@@ -43,7 +43,7 @@ authUri = oauth2.authorizationCode.authorizeURL({
   redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
 })
 
-mongoURL = 'mongodb://paulo:password@mongodb/test'
+mongoURL = 'mongodb://admin:AmHM98GCpxdG@mongodb/admin'
 
 var UserSchema = new mongoose.Schema({
   user_id: String,
@@ -360,11 +360,6 @@ app.get('/oauth', function(req,res){
       const token = result.access_token
       const ref_token = result.refresh_token
 
-      let user = result.user
-
-      let new_user = new User({user_id: user.id, name: user.name, accepted: false})
-
-      new_user.save(err => {console.log('saved user!')})
 
       res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
       res.cookie('r_token', ref_token, {secure: true})
