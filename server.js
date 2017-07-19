@@ -393,8 +393,9 @@ app.get('/oauth', function(req,res){
       user.save((err, data) => {
         if(err) console.log(err)
         else console.log('Saved user: ', data)
-        res.session.c_token = token
-        res.session.r_token = token
+
+        req.session.c_token = token
+        req.session.r_token = token
 
         shared_classes(req, res, token, user)
 
