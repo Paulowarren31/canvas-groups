@@ -8,6 +8,7 @@ var express = require('express'),
 cookieParser = require('cookie-parser')
 bp = require('body-parser')
 mongoose = require('mongoose')
+session = require('express-session')
 
 
 var host = 'https://umich-dev.instructure.com'
@@ -21,6 +22,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser())
 app.use(bp.json())
 app.use(bp.urlencoded({extended: true}))
+
+app.use(session({secret: "secrat"}))
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
   ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -74,8 +77,13 @@ mongoose.connect(mongoURL, function(err){
 var User = mongoose.model('User', UserSchema)
 
 app.post('/', function(req, res){
-  console.log(req)
-  console.log('Cookies: ', req.cookies)
+  console.log(req.session)
+  if(req.session.c_token){
+    console.log(req.session.c_token)
+  }
+  else{
+    req.session.c_token = 'abc'
+  }
 
   if(req.cookies.c_token){
     let token = req.cookies.c_token
@@ -376,7 +384,15 @@ app.get('/oauth', function(req,res){
       const token = result.access_token
       const ref_token = result.refresh_token
 
-      var user = new User({user_id: '0', name: 'paulo', accepted: false})
+      let id = result.user.id
+      let name = result.user.name
+
+      User.findOne({ 'user_id': id }, (err, user) => {
+        if(err) console.log(err)
+        console.log(user)
+      })
+
+      var user = new User({user_id: id, name: name, accepted: false})
 
       user.save((err, data) => {
         if(err) console.log(err)

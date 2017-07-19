@@ -18,7 +18,8 @@
     "object-assign": "4.1.0",
     "simple-oauth2": "^1.3.0",
     "cookie-parser": "*",
-    "sqlite3": "*"
+    "sqlite3": "*",
+    "express-session": "*"
   },
   "engine": {
     "node": "*",
