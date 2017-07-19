@@ -64,8 +64,8 @@ mongoose.connect(mongoURL, function(err){
   } )
 
   // Works
-  MyModel.findOne(function(error, result) { 
-    console.log('error', error); 
+  MyModel.findOne(function(error, result) {
+    console.log('error', error);
     console.log('result', result);
   });
 
@@ -142,7 +142,7 @@ function shared_classes(req, res, token, user){
                 return b.classes.length - a.classes.length
               })
 
-              //remove 
+              //remove
 
               res.render('home', {
                 people: grouped_users,
@@ -376,11 +376,19 @@ app.get('/oauth', function(req,res){
       const token = result.access_token
       const ref_token = result.refresh_token
 
+      var user = new User({user_id: '0', name: 'paulo', accepted: false})
 
-      res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
-      res.cookie('r_token', ref_token, {secure: true})
+      user.save((err, data) => {
+        if(err) console.log(err)
+        else console.log('Saved user: ', data)
+        res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
+        res.cookie('r_token', ref_token, {secure: true})
 
-      shared_classes(req, res, token, user)
+        shared_classes(req, res, token, user)
+
+      })
+
+
     })
   }
 })
