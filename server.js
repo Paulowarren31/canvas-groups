@@ -64,6 +64,7 @@ mongoose.connect(mongoURL, function(err){
 var User = mongoose.model('User', UserSchema)
 
 app.post('/', function(req, res){
+  console.log(req)
   console.log('Cookies: ', req.cookies)
 
   if(req.cookies.c_token){
@@ -83,6 +84,7 @@ app.post('/', function(req, res){
 function refresh(token, callback){
   let r_url = host + '/login/oauth2/token'
   console.log('trying to refresh token', token)
+
   axios.post(r_url, {
     grant_type: 'refresh_token',
     client_id: '85530000000000009',
@@ -92,6 +94,7 @@ function refresh(token, callback){
     console.log('got refreshed token: ', r.data)
     callback(r.data.access_token, r.data.user)
   }).catch(err =>{console.log(err)})
+
 }
 
 app.get('/', function(req, res){
@@ -124,9 +127,12 @@ function shared_classes(req, res, token, user){
             handleClasses(big_classes, token, (grouped_users, classes, groups) => {
               console.log('handle classes done with token ', token)
 
+              //sort by descending # of classes matched
               grouped_users.sort( (a, b) => {
                 return b.classes.length - a.classes.length
               })
+
+              //remove 
 
               res.render('home', {
                 people: grouped_users,
