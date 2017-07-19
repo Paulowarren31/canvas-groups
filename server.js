@@ -56,11 +56,17 @@ mongoose.connect(mongoURL, function(err){
   console.log('connected to mongoDB')
 
   var MyModel = mongoose.model('Test', new Schema({ name: String }));
+
+  var t = new MyModel({name: 'paulo'});
+  t.save( (err, data) => {
+    if(err) console.log(err)
+    else console.log('saved user paulo: ', data)
+  } )
+
   // Works
   MyModel.findOne(function(error, result) { 
     console.log('error', error); 
     console.log('result', result);
-    console.log('works')
   });
 
 })
