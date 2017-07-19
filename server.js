@@ -57,7 +57,11 @@ mongoose.connect(mongoURL, function(err){
 
   var MyModel = mongoose.model('Test', new Schema({ name: String }));
   // Works
-  MyModel.findOne(function(error, result) { console.log(error); console.log(result);});
+  MyModel.findOne(function(error, result) { 
+    console.log('error', error); 
+    console.log('result', result);
+    console.log('works')
+  });
 
 })
 
