@@ -79,24 +79,20 @@ var User = mongoose.model('User', UserSchema)
 app.post('/', function(req, res){
   console.log(req.session)
   if(req.session.c_token){
-    console.log(req.session.c_token)
-  }
-  else{
-    req.session.c_token = 'abc'
-  }
-
-  if(req.cookies.c_token){
-    let token = req.cookies.c_token
+    let token = req.session.c_token
+    console.log(token)
     shared_classes(req, res, token)
   }
-  else if(req.cookies.r_token){
-    refresh(req.cookies.r_token, (token, user) => {
+  else if(req.session.r_token){
+    refresh(req.session.r_token, (token, user) => {
       console.log('refreshed token ', token)
-      res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
+      res.session.c_token =  token
       shared_classes(req, res, token, user)
     })
+
   }
   else res.redirect(authUri)
+
 })
 
 function refresh(token, callback){
@@ -397,8 +393,8 @@ app.get('/oauth', function(req,res){
       user.save((err, data) => {
         if(err) console.log(err)
         else console.log('Saved user: ', data)
-        res.cookie('c_token', token, {expires: new Date(Date.now() + 3600000), secure: true})
-        res.cookie('r_token', ref_token, {secure: true})
+        res.session.c_token = token
+        res.session.r_token = token
 
         shared_classes(req, res, token, user)
 
