@@ -277,7 +277,7 @@ function getUserEmail(id, token, callback){
 //group_name: name of group
 //user_ids: list of ids separated by  , to be invited to the group
 app.post('/create', function(req,res){
-  var token = req.body.token
+  var token = req.session.c_token
 
   if(!token){
     res.send('error, please refresh and get a new token')
@@ -382,27 +382,52 @@ app.get('/oauth', function(req,res){
       let id = result.user.id
       let name = result.user.name
 
+      req.session.c_token = token
+      req.session.r_token = ref_token
+
       User.findOne({ 'user_id': id }, (err, user) => {
         if(err) console.log(err)
-        console.log('found user: ', user)
+        if(user){
+          if(user.accepted){
+            shared_classes(req, res, token, user)
+          }
+          else{
+            res.render('optin', {id: id})
+          }
+        }
+        else{ //brand new user
+
+          var user = new User({user_id: id, name: name, accepted: false})
+
+          user.save((err, data) => {
+            if(err) console.log(err)
+            else console.log('Saved user: ', data)
+            shared_classes(req, res, token, user)
+          })
+          res.render('optin', {id: id})
+        }
       })
-
-      var user = new User({user_id: id, name: name, accepted: false})
-
-      user.save((err, data) => {
-        if(err) console.log(err)
-        else console.log('Saved user: ', data)
-        req.session.c_token = token
-        req.session.r_token = ref_token
-
-        shared_classes(req, res, token, user)
-
-      })
-
-
     })
   }
 })
+
+
+app.post('/optin', (req, res) => {
+  let id = req.body.id
+  User.findOne({ 'user_id': id }, (err, user) => {
+    if(err) console.log(err)
+    if(user){
+      user.accepted = true
+      user.save((err) => {
+        if(err) console.log(err)
+        else console.log('opted in user id', id)
+        res.redirect('/')
+      })
+    }
+  })
+
+})
+
 
 // error handling
 app.use(function(err, req, res, next){
