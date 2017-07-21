@@ -1,11 +1,14 @@
 $(function(){
-  alert('opt in');
-  $('opt-btn').on('click', e => {
+  $('[id^=agree]').on('click', e => {
+
+    id = $('[id^=agree]').attr('id').split('-')
+    console.log(id)
+
 
     let url = 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/optin'
 
     let data = {
-      id: '123'
+      id: id[1]
     }
 
     $.ajax({

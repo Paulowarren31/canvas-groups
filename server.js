@@ -388,6 +388,7 @@ app.get('/oauth', function(req,res){
       User.findOne({ 'user_id': id }, (err, user) => {
         if(err) console.log(err)
         if(user){
+          console.log('auth found user already')
           if(user.accepted){
             shared_classes(req, res, token, user)
           }
@@ -396,15 +397,15 @@ app.get('/oauth', function(req,res){
           }
         }
         else{ //brand new user
+          console.log('brand new user')
 
           var user = new User({user_id: id, name: name, accepted: false})
 
           user.save((err, data) => {
             if(err) console.log(err)
             else console.log('Saved user: ', data)
-            shared_classes(req, res, token, user)
+            res.render('optin', {id: id})
           })
-          res.render('optin', {id: id})
         }
       })
     })
