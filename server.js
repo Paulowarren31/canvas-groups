@@ -78,6 +78,7 @@ var User = mongoose.model('User', UserSchema)
 
 app.post('/', function(req, res){
   console.log(req.session)
+
   if(req.session.c_token){
     let token = req.session.c_token
     console.log(token)
@@ -130,14 +131,28 @@ function shared_classes(req, res, token, user){
           resp = await axios.get(host + '/api/v1/courses/'+id
             +'/students?access_token='+token)
 
+          //resp.data has students array, we must filter with opted in users
+
+          let users = resp.data.filter((user) => {
+            User.findOne({ 'user_id': id }, (err, user) => {
+              if(err){
+                console.log(err)
+                return false
+              }
+              if(user && user.accepted) return true
+              return false
+            })
+          })
+
           big_classes.push({
             name: name,
             id: id,
-            users: resp.data
+            users: users
           })
 
           //done with async stuff
           if(big_classes.length == classes.length){
+
             handleClasses(big_classes, token, (grouped_users, classes, groups) => {
               console.log('handle classes done with token ', token)
 
@@ -167,6 +182,7 @@ function shared_classes(req, res, token, user){
     })
 }
 
+
 //all classes in the array now.catch()
 function handleClasses(classes, token, callback){
   console.log('handleClasses token: ' + token)
@@ -175,7 +191,6 @@ function handleClasses(classes, token, callback){
   getUserId(token).then(self_id => {
     classes.forEach(function(cl){
       cl.users.forEach(function(user){
-
         //dont include ourselves
         if(self_id == user.id) return
 
