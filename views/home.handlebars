@@ -6,11 +6,11 @@
 <nav class="navbar navbar-light bg-faded p-0">
   <div class="d-flex justify-content-around">
     <button id="student-btn" class="btn btn-lg w-100 light-blue">
-        Students
+        Student List
         <span id="stud-tri" class="btn-triangle l-btn"></span>
     </button>
     <button id="class-btn" class="btn btn-lg w-100 light-blue">
-        Groups i'm In
+        Current Groups
         <span id="grp-tri" class="btn-triangle r-btn hidden"></span>
     </button>
   </div>
@@ -21,7 +21,6 @@
       <table id="student-list" class="table">
         <thead>
           <tr>
-            <th>#</th>
             <th>Name</th>
             <th>Email</th>
             <th>Shared Classes</th>
@@ -30,7 +29,6 @@
         <tbody>
           {{#each people}}
           <tr>
-            <th scope="row">{{@index}}</th>
             <td>{{this.name}}</td>
             <td>{{this.login_id}}</td>
             <td class="text-primary" data-toggle="tooltip" data-placement="top" title="{{this.classes}}">{{this.classes.length}}</td>
@@ -41,7 +39,6 @@
       <table id="classes-list" class="table hidden">
         <thead>
           <tr>
-            <th>#</th>
             <th>Group</th>
             <th>Students</th>
             <th>Shared Classes</th>
@@ -51,7 +48,6 @@
         <tbody>
           {{#each classes}}
           <tr>
-            <th scope="row">{{@index}}</th>
             <th scope="row">{{this.classes}}</th>
             <td>
               <span class="badge badge-default badge-pill">{{this.students.length}}</span>
