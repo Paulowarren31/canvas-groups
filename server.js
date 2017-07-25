@@ -46,13 +46,15 @@ authUri = oauth2.authorizationCode.authorizeURL({
   redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
 })
 
-mongoURL = 'mongodb://admin:AmHM98GCpxdG@mongodb/admin'
+mongoURL = 'mongodb://canvas:mXON87yLKt7F@mongodb/users'
 
 var UserSchema = new mongoose.Schema({
   user_id: String,
   name: String,
   accepted: Boolean
 })
+
+var User = mongoose.model('User', UserSchema)
 
 mongoose.connect(mongoURL, function(err){
   if(err) console.log(err);
@@ -74,7 +76,6 @@ mongoose.connect(mongoURL, function(err){
 
 })
 
-var User = mongoose.model('User', UserSchema)
 
 app.post('/', function(req, res){
   console.log(req.session)
@@ -371,8 +372,9 @@ app.get('/oauth', function(req,res){
     oauth2.authorizationCode.getToken(options, (error, result) => {
 
       if (error) {
-        console.error('Access Token Error', error.message);
-        return res.json('Authentication failed');
+        console.log('error', error)
+        console.error('Access Token Error', error.message)
+        return res.json('Authentication failed')
       }
 
 
