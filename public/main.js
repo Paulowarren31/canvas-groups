@@ -43,6 +43,9 @@ $(function(){
 
   $('#student-btn').on('click', e => {
 
+    $('#stud-tri').removeClass('hidden')
+    $('#grp-tri').addClass('hidden')
+
     $('#student-btn').addClass('bold')
     $('#class-btn').removeClass('bold')
 
@@ -51,6 +54,9 @@ $(function(){
   })
 
   $('#class-btn').on('click', e => {
+    $('#stud-tri').addClass('hidden')
+    $('#grp-tri').removeClass('hidden')
+
     $('#class-btn').addClass('bold')
     $('#student-btn').removeClass('bold')
 
