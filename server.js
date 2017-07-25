@@ -66,13 +66,13 @@ mongoose.connect(mongoURL, function(err){
   t.save( (err, data) => {
     if(err) console.log(err)
     else console.log('saved user paulo: ', data)
-  } )
+    // Works
+    MyModel.findOne(function(error, result) {
+      console.log('error', error);
+      console.log('result', result);
+    });
+  })
 
-  // Works
-  MyModel.findOne(function(error, result) {
-    console.log('error', error);
-    console.log('result', result);
-  });
 
 })
 
