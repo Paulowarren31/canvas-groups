@@ -1,6 +1,20 @@
-<div class="container-fluid">
-  <h2>Opt In</h2>
-  <p>You must first agree to be in the list so that people can see you and be nice to you and stuff. </p>
-  <button id="agree-{{id}}" class="btn"> I agree {{id}}</button>
+<div id="modal" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Opt In</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>opt in?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="agree-{{id}}" type="button" class="btn btn-primary">I agree</button>
+                <button id="cancel" type="button" class="btn btn-warning" >Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="/optin.js"></script>

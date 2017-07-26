@@ -1,4 +1,5 @@
 $(function(){
+  $('#modal').modal('show')
   $('[id^=agree]').on('click', e => {
 
     id = $('[id^=agree]').attr('id').split('-')
