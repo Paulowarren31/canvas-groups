@@ -144,13 +144,17 @@ function shared_classes(req, res, token, user){
                 return false
 
               }
-              console.log(user)
-              if(user && user.accepted) return true
+              if(user) console.log(user)
+              if(user && user.accepted){
+                console.log(user)
+                console.log('user is in!')
+                return true
+              }
               return false
-
             })
 
           })
+          console.log(users)
 
           big_classes.push({
             name: name,
