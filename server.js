@@ -144,13 +144,11 @@ function shared_classes(req, res, token, user){
                 console.log(err)
                 callback(null, false)
               }
-              if(user) console.log(user)
               if(user && user.accepted){
                 console.log(user)
                 console.log('user is in!')
                 callback(null, true)
               }
-              callback(null, false)
             })
           }, (err, users) => {
             console.log('FILTERD', users)
