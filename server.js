@@ -429,7 +429,20 @@ app.post('/optin', (req, res) => {
       user.save((err) => {
         if(err) console.log(err)
         else console.log('opted in user id', id)
-        res.redirect('/')
+        console.log(req.session)
+        if(req.session.c_token){
+          let token = req.session.c_token
+          console.log(token)
+          shared_classes(req, res, token)
+        }
+        else if(req.session.r_token){
+          refresh(req.session.r_token, (token, user) => {
+            console.log('refreshed token ', token)
+            res.session.c_token =  token
+            shared_classes(req, res, token, user)
+          })
+        }
+        else res.redirect('/')
       })
     }
   })
