@@ -19,8 +19,7 @@ $(function(){
         alert('you did it now you can refresh')
       },
       error: (a, status, error) => {
-        console.log(status)
-        console.log(error)
+        location.reload()
       },
       data: data,
       dataType: 'json'
