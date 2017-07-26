@@ -9,6 +9,7 @@ cookieParser = require('cookie-parser')
 bp = require('body-parser')
 mongoose = require('mongoose')
 session = require('express-session')
+ayy = require('async')
 
 
 var host = 'https://umich-dev.instructure.com'
@@ -121,7 +122,6 @@ app.get('/', function(req, res){
   res.redirect(authUri)
 })
 
-import filter from 'async/filter'
 
 function shared_classes(req, res, token, user){
 
@@ -138,7 +138,7 @@ function shared_classes(req, res, token, user){
           resp = await axios.get(host + '/api/v1/courses/'+id
             +'/students?access_token='+token)
 
-          filter(resp.data, (user, callback) => {
+          ayy.filter(resp.data, (user, callback) => {
             User.findOne({ 'user_id': user.id  }, (err, user) => {
               if(err){
                 console.log(err)
