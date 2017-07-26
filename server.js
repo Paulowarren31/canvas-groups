@@ -138,7 +138,8 @@ function shared_classes(req, res, token, user){
 
 
           let users = resp.data.filter((user) => {
-            User.findOne({ 'user_id': id  }, (err, user) => {
+            console.log('finding user: ', user)
+            User.findOne({ 'user_id': user.id  }, (err, user) => {
               if(err){
                 console.log(err)
                 return false
