@@ -19,7 +19,7 @@ $(function(){
         alert('you did it now you can refresh')
       },
       error: (a, status, error) => {
-        window.location = window.location
+
       },
       data: data,
       dataType: 'json'

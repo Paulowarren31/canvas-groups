@@ -136,10 +136,25 @@ function shared_classes(req, res, token, user){
           resp = await axios.get(host + '/api/v1/courses/'+id
             +'/students?access_token='+token)
 
+
+          let users = resp.data.filter((user) => {
+            User.findOne({ 'user_id': id  }, (err, user) => {
+              if(err){
+                console.log(err)
+                return false
+
+              }
+              if(user && user.accepted) return true
+              return false
+
+            })
+
+          })
+
           big_classes.push({
             name: name,
             id: id,
-            users: resp.data
+            users: users
           })
 
           //done with async stuff
