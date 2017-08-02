@@ -138,27 +138,24 @@ function shared_classes(req, res, token, user){
           resp = await axios.get(host + '/api/v1/courses/'+id
             +'/students?access_token='+token)
 
-          /*
           asyn.filter(resp.data, (user, callback) => {
             User.findOne({ 'user_id': user.id  }, (err, user) => {
               if(err){
                 console.log(err)
-                callback(null, false)
+                return callback(null, false)
               }
               if(user && user.accepted){
                 console.log(user)
                 console.log('user is in!')
-                callback(null, true)
+                return callback(null, true)
               }
               callback(null, false)
             })
           }, (err, users) => {
-
-
+            console.log('filtered users:', users)
           })
-          */
+
           users = resp.data
-          console.log('FILTERD', users)
 
           big_classes.push({
             name: name,
@@ -199,6 +196,7 @@ function shared_classes(req, res, token, user){
 
 //all classes in the array now.catch()
 function handleClasses(classes, token, callback){
+
   console.log('handleClasses token: ' + token)
   dictionary = new Map();
 

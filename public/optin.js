@@ -15,13 +15,11 @@ $(function(){
       type: 'POST',
       url: url,
       success: (r) => { 
-        console.log(r)
-        if(r.status == 'success')
-        alert('you did it now you can refresh')
+        if(r.status == 'success') location.reload()
       },
       error: (a, status, error) => {
-        console.log('err0r')
         console.log(a, status, error)
+        location.reload()
       },
       data: data,
       dataType: 'json'
