@@ -1,5 +1,5 @@
 $(function(){
-  $('#modal').modal('show')
+  $('#modal').modal({backdrop: 'static', keyboard: false})
   $('[id^=agree]').on('click', e => {
 
     id = $('[id^=agree]').attr('id').split('-')
@@ -25,5 +25,8 @@ $(function(){
       dataType: 'json'
     })
 
+  })
+  $('#cancel').on('click', e => {
+    window.history.back()
   })
 })
