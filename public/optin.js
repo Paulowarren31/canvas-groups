@@ -15,10 +15,12 @@ $(function(){
       type: 'POST',
       url: url,
       success: (r) => { 
+        console.log(r)
         alert('you did it now you can refresh')
       },
       error: (a, status, error) => {
-
+        console.log('err0r')
+        console.log(a, status, error)
       },
       data: data,
       dataType: 'json'
