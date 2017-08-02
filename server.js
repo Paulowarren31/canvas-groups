@@ -9,7 +9,7 @@ cookieParser = require('cookie-parser')
 bp = require('body-parser')
 mongoose = require('mongoose')
 session = require('express-session')
-ayy = require('async')
+asyn = require('async')
 
 
 var host = 'https://umich-dev.instructure.com'
@@ -138,7 +138,8 @@ function shared_classes(req, res, token, user){
           resp = await axios.get(host + '/api/v1/courses/'+id
             +'/students?access_token='+token)
 
-          ayy.filter(resp.data, (user, callback) => {
+          /*
+          asyn.filter(resp.data, (user, callback) => {
             User.findOne({ 'user_id': user.id  }, (err, user) => {
               if(err){
                 console.log(err)
@@ -149,39 +150,42 @@ function shared_classes(req, res, token, user){
                 console.log('user is in!')
                 callback(null, true)
               }
+              callback(null, false)
             })
           }, (err, users) => {
-            console.log('FILTERD', users)
-
-            big_classes.push({
-              name: name,
-              id: id,
-              users: users
-            })
-
-            //done with async stuff
-            if(big_classes.length == classes.length){
-              handleClasses(big_classes, token, (grouped_users, classes, groups) => {
-                console.log('handle classes done with token ', token)
-
-                //sort by descending # of classes matched
-                grouped_users.sort( (a, b) => {
-                  return b.classes.length - a.classes.length
-                })
-
-                //remove
-
-                res.render('home', {
-                  people: grouped_users,
-                  classes: classes,
-                  groups: groups
-                })
 
 
-              })
-            }
           })
-          
+          */
+          console.log('FILTERD', users)
+
+          big_classes.push({
+            name: name,
+            id: id,
+            users: users
+          })
+
+          //done with async stuff
+          if(big_classes.length == classes.length){
+            handleClasses(big_classes, token, (grouped_users, classes, groups) => {
+              console.log('handle classes done with token ', token)
+
+              //sort by descending # of classes matched
+              grouped_users.sort( (a, b) => {
+                return b.classes.length - a.classes.length
+              })
+
+              //remove
+
+              res.render('home', {
+                people: grouped_users,
+                classes: classes,
+                groups: groups
+              })
+
+            })
+          }
+
         }
         main(cl.id, cl.name, token);
       }
