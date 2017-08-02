@@ -3,7 +3,6 @@ $(function(){
   $('[id^=agree]').on('click', e => {
 
     id = $('[id^=agree]').attr('id').split('-')
-    console.log(id)
 
 
     let url = 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/optin'

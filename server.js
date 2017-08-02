@@ -448,10 +448,11 @@ app.post('/optin', (req, res) => {
       user.save((err) => {
         if(err) console.log(err)
         else console.log('opted in user id', id)
-        console.log(req.session)
+
+        /*
+
         if(req.session.c_token){
           let token = req.session.c_token
-          console.log(token)
           shared_classes(req, res, token)
         }
         else if(req.session.r_token){
@@ -462,10 +463,11 @@ app.post('/optin', (req, res) => {
           })
         }
         else res.redirect('/')
+        */
+        res.send('success')
       })
     }
   })
-
 })
 
 
