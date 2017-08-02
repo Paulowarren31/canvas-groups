@@ -15,11 +15,11 @@ $(function(){
       type: 'POST',
       url: url,
       success: (r) => { 
-        if(r.status == 'success') location.reload()
+        if(r.status == 'success') parent.location.href=parent.location.href
       },
       error: (a, status, error) => {
         console.log(a, status, error)
-        location.reload()
+        parent.location.href=parent.location.href
       },
       data: data,
       dataType: 'json'

@@ -1,20 +1,15 @@
 <div id="modal" class="modal fade">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Opt In</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>opt in?</p>
-            </div>
-            <div class="modal-footer">
-                <button id="agree-{{id}}" type="button" class="btn btn-primary">I agree</button>
-                <button id="cancel" type="button" class="btn btn-warning" >Cancel</button>
-            </div>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <h4>You are choosing to opt in to Smart Groups. This allows Canvas to group students ith similar classes.</h4>
+        <p>Do you want to opt in for your courses?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button id="agree-{{id}}" type="button" class="btn btn-primary mr-3">I agree</button>
+        <button id="cancel" type="button" class="btn btn-warning ml-3" >Cancel</button>
+      </div>
     </div>
+  </div>
 </div>
 <script src="/optin.js"></script>
