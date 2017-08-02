@@ -441,13 +441,19 @@ app.get('/oauth', function(req,res){
 
 app.post('/optin', (req, res) => {
   let id = req.body.id
+  console.log(id)
   User.findOne({ 'user_id': id }, (err, user) => {
-    if(err) console.log(err)
+    if(err){
+      res.send('error')
+      console.log(err)
+    }
     if(user){
       user.accepted = true
       user.save((err) => {
         if(err) console.log(err)
         else console.log('opted in user id', id)
+
+        res.send('success')
 
         /*
 
@@ -464,7 +470,6 @@ app.post('/optin', (req, res) => {
         }
         else res.redirect('/')
         */
-        res.send('success')
       })
     }
   })
