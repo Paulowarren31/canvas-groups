@@ -153,37 +153,33 @@ function shared_classes(req, res, token, user){
             })
           }, (err, users) => {
             console.log('filtered users:', users)
-          })
-
-          users = resp.data
-
-          big_classes.push({
-            name: name,
-            id: id,
-            users: users
-          })
-
-          //done with async stuff
-          if(big_classes.length == classes.length){
-            handleClasses(big_classes, token, (grouped_users, classes, groups) => {
-              console.log('handle classes done with token ', token)
-
-              //sort by descending # of classes matched
-              grouped_users.sort( (a, b) => {
-                return b.classes.length - a.classes.length
-              })
-
-              //remove
-
-              res.render('home', {
-                people: grouped_users,
-                classes: classes,
-                groups: groups
-              })
-
+            big_classes.push({
+              name: name,
+              id: id,
+              users: users
             })
-          }
 
+            //done with async stuff
+            if(big_classes.length == classes.length){
+              handleClasses(big_classes, token, (grouped_users, classes, groups) => {
+                console.log('handle classes done with token ', token)
+
+                //sort by descending # of classes matched
+                grouped_users.sort( (a, b) => {
+                  return b.classes.length - a.classes.length
+                })
+
+                //remove
+
+                res.render('home', {
+                  people: grouped_users,
+                  classes: classes,
+                  groups: groups
+                })
+
+              })
+            }
+          })
         }
         main(cl.id, cl.name, token);
       }
