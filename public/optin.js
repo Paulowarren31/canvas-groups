@@ -16,6 +16,7 @@ $(function(){
       url: url,
       success: (r) => { 
         console.log(r)
+        if(r.status == 'success')
         alert('you did it now you can refresh')
       },
       error: (a, status, error) => {

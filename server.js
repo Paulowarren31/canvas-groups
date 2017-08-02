@@ -448,7 +448,7 @@ app.post('/optin', (req, res) => {
   console.log(id)
   User.findOne({ 'user_id': id }, (err, user) => {
     if(err){
-      res.send('error')
+      res.send({status: 'error'})
       console.log(err)
     }
     if(user){
@@ -457,7 +457,7 @@ app.post('/optin', (req, res) => {
         if(err) console.log(err)
         else console.log('opted in user id', id)
 
-        res.send('success')
+        res.send({status: 'success'})
 
         /*
 
