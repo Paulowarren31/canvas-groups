@@ -157,6 +157,7 @@ function shared_classes(req, res, token, user){
 
           })
           */
+          users = resp.data
           console.log('FILTERD', users)
 
           big_classes.push({
