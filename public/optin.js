@@ -4,7 +4,6 @@ $(function(){
 
     id = $('[id^=agree]').attr('id').split('-')
 
-
     let url = 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/optin'
 
     let data = {
@@ -15,11 +14,13 @@ $(function(){
       type: 'POST',
       url: url,
       success: (r) => { 
-        if(r.status == 'success') parent.location.href=parent.location.href
+        if(r.status == 'success'){
+          $('#main').hide()
+          $('#success').show()
+        }
       },
       error: (a, status, error) => {
         console.log(a, status, error)
-        parent.location.href=parent.location.href
       },
       data: data,
       dataType: 'json'
