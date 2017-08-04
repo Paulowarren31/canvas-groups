@@ -453,7 +453,6 @@ app.post('/optin', (req, res) => {
         else console.log('opted in user id', id)
 
         res.send({status: 'success'})
-
         /*
 
         if(req.session.c_token){
