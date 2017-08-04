@@ -16,6 +16,7 @@ $(function(){
       success: (r) => { 
         if(r.status == 'success'){
           $('#main').hide()
+          $('#footer').hide()
           $('#success').show()
         }
       },

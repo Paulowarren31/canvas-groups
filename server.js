@@ -52,6 +52,8 @@ authUri = oauth2.authorizationCode.authorizeURL({
   redirect_uri: 'https://smart-groups-canvas-groups.openshift.dsc.umich.edu/oauth',
 })
 
+var mongo_pass = process.env.MONGO_PASS
+
 mongoURL = 'mongodb://canvas:QYNAb3jS60uK@mongodb/users'
 
 var UserSchema = new mongoose.Schema({
@@ -167,6 +169,10 @@ function shared_classes(req, res, token, user){
                 //sort by descending # of classes matched
                 grouped_users.sort( (a, b) => {
                   return b.classes.length - a.classes.length
+                })
+
+                classes.forEach( cls => {
+                  cls.class_string = cls.classes.replace(/,[s]*/g, ", ");
                 })
 
                 //remove
