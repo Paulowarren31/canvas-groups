@@ -24,7 +24,7 @@ app.use(cookieParser())
 app.use(bp.json())
 app.use(bp.urlencoded({extended: true}))
 
-app.use(session({secret: "secrat"}))
+app.use(session({secret: process.env.SESSION_SECRET}))
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://umich-dev.instructure.com');
