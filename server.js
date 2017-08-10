@@ -209,7 +209,7 @@ function handleClasses(classes, token, callback){
       //filter out users who only share 1 class
       if(u.classes.length > 1){
         users.push(u)
-        sorted = item.classes.sort().toString()
+        sorted = u.classes.sort().toString()
 
         if(classes_to_users.has(sorted)){
           classes_to_users.get(sorted).push(u)
