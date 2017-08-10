@@ -54,7 +54,7 @@ authUri = oauth2.authorizationCode.authorizeURL({
 
 var mongo_pass = process.env.MONGO_PASS
 
-mongoURL = 'mongodb://canvas:QYNAb3jS60uK@mongodb/users'
+mongoURL = 'mongodb://canvas:'+ mongo_pass +'@mongodb/users'
 
 var UserSchema = new mongoose.Schema({
   user_id: String,
@@ -67,21 +67,6 @@ var User = mongoose.model('User', UserSchema)
 mongoose.connect(mongoURL, function(err){
   if(err) console.log(err);
   console.log('connected to mongoDB')
-
-  var MyModel = mongoose.model('Test', new Schema({ name: String }));
-
-  var t = new MyModel({name: 'paulo'});
-  t.save( (err, data) => {
-    if(err) console.log(err)
-    else console.log('saved user paulo: ', data)
-    // Works
-    MyModel.findOne(function(error, result) {
-      console.log('error', error);
-      console.log('result', result);
-    });
-  })
-
-
 })
 
 
@@ -101,7 +86,6 @@ app.post('/', function(req, res){
 
   }
   else res.redirect(authUri)
-
 })
 
 function refresh(token, callback){
@@ -126,9 +110,6 @@ app.get('/', function(req, res){
 
 
 function shared_classes(req, res, token, user){
-
-  if(user){
-  }
 
   var big_classes = []
   axios.get(host + '/api/v1/courses?access_token='+token)
@@ -196,68 +177,69 @@ function shared_classes(req, res, token, user){
     })
 }
 
-//all classes in the array now.catch()
+//
 function handleClasses(classes, token, callback){
-
   console.log('handleClasses token: ' + token)
   dictionary = new Map();
 
+  //get id of the user to make sure we don't include them
   getUserId(token).then(self_id => {
-    classes.forEach(function(cl){
-      cl.users.forEach(function(user){
+    classes.forEach( (cl) => {
+      cl.users.forEach( (user) => {
 
         //dont include ourselves
         if(self_id == user.id) return
 
+        //if user id exists in the dict, add classname to their list of classes
         if(dictionary.has(user.id)){
           dictionary.get(user.id).classes.push(cl.name)
           //console.log('dupe')
         }
-        else{
-          //console.log(cl)
-          user.classes = [cl.name]
-          dictionary.set(user.id, user)
+        else{ //new key in dict
+          user.classes = [cl.name] // set user.classes to be a list of class names
+          dictionary.set(user.id, user) // user id => user
         }
       })
     })
 
     users = []
-    classes_to_users = new Map();
+    classes_to_users = new Map(); // maps class names to lists of users
 
-    dictionary.forEach(function(item){
+    dictionary.forEach( (u) => {
       //filter out users who only share 1 class
-      if(item.classes.length > 1){
-        users.push(item)
-
+      if(u.classes.length > 1){
+        users.push(u)
         sorted = item.classes.sort().toString()
 
         if(classes_to_users.has(sorted)){
-          classes_to_users.get(sorted).push(item)
+          classes_to_users.get(sorted).push(u)
         }
         else{
-          classes_to_users.set(sorted, [item])
+          classes_to_users.set(sorted, [u])
         }
       }
     })
 
     classes = []
-
     classes_to_users.forEach((val, key) => {
-      c_c = key.split(',').length
-      students = val
-      s_ids = []
+      //key is list of classes shared, so this gets # of classes
+      let c_c = key.split(',').length
+      let students = val
+      let s_ids = []
 
       students.forEach(student => { s_ids.push(student.id) })
 
-      //remove spaces and commas
+      //remove spaces and commas from student id list
       s_ids = s_ids.toString().replace('/ ','/').replace('/,','/')
 
-      console.log('s_ids: ', s_ids)
-
+      //c_count is classes count
+      //s_ids are ids of students in that class
+      //added is whether or not this has a group created with it
       classes.push({'classes': key, 'students': val, 'c_count': c_c,
         's_ids': s_ids, 'added': false, 'link': ''})
     })
 
+    //checks whether any of the users groups actually has a group created already
     let groups_endpoint = host + '/api/v1/users/self/groups'
     axios.get(groups_endpoint, {headers: { Authorization: "Bearer " + token }})
       .then(r => {
@@ -281,25 +263,18 @@ function handleClasses(classes, token, callback){
   }).catch(err =>{console.log(err)})
 }
 
+//es6 async :)
 async function getUserId(token){
   let url = host + '/api/v1/users/self?access_token='+token
   user = await axios.get(url)
   return user.data.id
 }
 
-function getUserEmail(id, token, callback){
+async function getUserEmail(id, token){
   let url = host + '/api/v1/users/'+ id +'/profile?access_token='+token
 
-  try{
-    axios.get(url).then(profile => {
-      let email = profile.data.primary_email
-      console.log('got email ', email)
-      callback(email)
-    })
-  } catch(e){
-    console.error('exception', e)
-    callback('')
-  }
+  profile = await axios.get(url)
+  return profile.data.primary_email
 }
 
 //creates a new group with given ids and name of group
@@ -342,54 +317,52 @@ app.post('/create', function(req,res){
 
     // for each user id, get their email
     user_ids.forEach( id => {
-      getUserEmail(id, token, email => {
+      let email = getUserEmail(id, token)
 
-        user_emails.push(email)
+      user_emails.push(email)
 
-        if(user_emails.length == user_ids.length){
+      if(user_emails.length == user_ids.length){
 
-          axios.post(invite_url, {
-            invitees: user_emails
-          }, {
-            headers: { Authorization: "Bearer " + token }
-          }).then(r => {
+        axios.post(invite_url, {
+          invitees: user_emails
+        }, {
+          headers: { Authorization: "Bearer " + token }
+        }).then(r => {
 
-            console.log('updated group')
+          console.log('updated group')
 
-            user_ids.forEach( id => {
-              let join_url = host + '/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
+          user_ids.forEach( id => {
+            let join_url = host + '/api/v1/groups/'+grp_id+'/users/'+id+'?workflow_state=accepted'
 
-              console.log('sending update membership', join_url)
+            console.log('sending update membership', join_url)
 
-              axios.put(join_url, {
-                workflow_state: 'accepted'
-              }, {
-                headers: { Authorization: "Bearer " + token }
-              }).then(r => {
-                console.log('accepted invite for user id: '+ id, token)
-              }).catch(err =>{console.log(err)})
-            })
+            axios.put(join_url, {
+              workflow_state: 'accepted'
+            }, {
+              headers: { Authorization: "Bearer " + token }
+            }).then(r => {
+              console.log('accepted invite for user id: '+ id, token)
+            }).catch(err =>{console.log(err)})
+          })
 
-            res.send({group_url: group_url}) //pass group url back to frontend
+          res.send({group_url: group_url}) //pass group url back to frontend
 
-          }).catch(err => {console.log('INVITE ERROR');console.log(err);})
+        }).catch(err => {console.log('INVITE ERROR');console.log(err);})
 
-        }
+      }
 
-      })
     })
 
   }).catch(err =>{console.log(err)})
 })
 
-//step 2 oauth
+//oauth endpoint, 
 app.get('/oauth', function(req,res){
   if(req.query.error == 'access_denied'){
     //access denied
   }
   //all good
   else{
-    console.log('all good')
     let code = req.query.code
 
     let url = host + '/login/oauth2/token'
@@ -399,13 +372,11 @@ app.get('/oauth', function(req,res){
     }
 
     oauth2.authorizationCode.getToken(options, (error, result) => {
-
       if (error) {
         console.log('error', error)
         console.error('Access Token Error', error.message)
         return res.json('Authentication failed')
       }
-
 
       const token = result.access_token
       const ref_token = result.refresh_token
@@ -413,8 +384,9 @@ app.get('/oauth', function(req,res){
       let id = result.user.id
       let name = result.user.name
 
-      req.session.c_token = token
-      req.session.r_token = ref_token
+      //set some session variables
+      req.session.c_token = token //access token
+      req.session.r_token = ref_token //refresh token
 
       User.findOne({ 'user_id': id }, (err, user) => {
         if(err) console.log(err)
@@ -428,8 +400,6 @@ app.get('/oauth', function(req,res){
           }
         }
         else{ //brand new user
-          console.log('brand new user')
-
           var user = new User({user_id: id, name: name, accepted: false})
 
           user.save((err, data) => {
